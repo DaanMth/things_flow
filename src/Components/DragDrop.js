@@ -80,14 +80,24 @@ function DragDrop() {
         setBoard((board) => [...board]);
     }
 
+    const calculateInt = (halfPictures) =>{
+        let halfInt = 0;
+        {halfPictures.map((picture) => {
+            halfInt += picture.int
+        })}
+        return halfInt
+    }
 
     const ApiCall = () => {
-        const firstNumber = board[0].int
-        const secondNumber = board[1].int
+        const half = Math.ceil(board.length / 2);
+
+        const firstHalf = calculateInt(board.slice(0, half))
+        const secondHalf = calculateInt(board.slice(half));
+
         axios.post("http://localhost:9210/collection/stuff", {
                 'type': 'run',
                 'name': 'multiply',
-                'args': [parseInt(firstNumber, 10), parseInt(secondNumber, 10)]
+                'args': [parseInt(firstHalf, 10), parseInt(secondHalf, 10)]
             },
             {
                 headers: {
