@@ -1,38 +1,66 @@
 .App {
-  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  background: #618FCA;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.sidebar{
+  border: 2px solid #5A7291;
+  background-color: #81A5D5;
+  position: absolute;
+  width: 300px;
+  height: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.Pictures {
+  margin: 10px;
+
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.onBoard{
+  width: 10%;
+}
+.submit{
+  margin-left: 1700px;
+  margin-top: 10px;
+  position: absolute;
 }
 
-.App-link {
-  color: #61dafb;
+.math{
+  border-radius: 10px;
+  border-style: none;
+  background-color: #5A7291;
+  width: 75px;
+  height: 40px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.math:hover{
+  border-style: none;
+  background-color: #D6E3F4;
+}
+
+.math:active{
+  border-style: none;
+  background-color: #41546b;
+}
+
+.answerText{
+  margin-top: 5px;
+  background-color: #D6E3F4;
+}
+
+img {
+  margin: 15px;
+  border-radius: 10px;
+}
+
+.Board {
+  background-color: #D6E3F4;
+  padding: 40px;
+  position: absolute;
+  margin-top: 90px;
+  margin-left: 470px;
+  width: 1300px;
+  height: 700px;
+  border-radius: 10px;
 }
