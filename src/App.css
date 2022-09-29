@@ -1,7 +1,56 @@
 .App {
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   background: #618FCA;
+}
+
+.blocks{
+  display: flex;
+}
+
+.leader-line {
+  z-index: 0;
+}
+
+.header{
+  background-color: white;
+  box-shadow: 0 4px 2px -2px #5A7291;
+  width: 100%;
+  height: 13%;
+}
+
+.logo{
+  margin-left: 70px;
+  position: absolute;
+  z-index: 1;
+  width: 15%;
+  height: auto
+}
+
+.column {
+  float: left;
+  width: 46%;
+  padding: 10px;
+}
+
+.texts{
+  text-align: center;
+  margin-left: 250px;
+}
+
+
+/* @media screen and (max-width: 1800px) {
+  .texts {
+    display: none;
+  }
+} */
+
+.column2 {
+  text-align: center;
+  float: left;
+  padding-right: 80px;
+  padding-top: 20px;
 }
 
 .sidebar{
@@ -9,12 +58,11 @@
   background-color: #81A5D5;
   position: absolute;
   width: 300px;
-  height: 100%;
+  height: 832px;
 }
 
 .Pictures {
   margin: 10px;
-
 }
 
 .onBoard{
@@ -28,6 +76,7 @@
 
 .math{
   border-radius: 10px;
+  box-shadow: 0 4px 2px -2px #455a6e;
   border-style: none;
   background-color: #5A7291;
   width: 75px;
@@ -36,7 +85,7 @@
 
 .math:hover{
   border-style: none;
-  background-color: #D6E3F4;
+  background-color: #6982a6;
 }
 
 .math:active{
@@ -47,6 +96,8 @@
 .answerText{
   margin-top: 5px;
   background-color: #D6E3F4;
+  border-radius: 2px;
+  box-shadow: 0 4px 2px -2px #455a6e;
 }
 
 img {
@@ -54,13 +105,30 @@ img {
   border-radius: 10px;
 }
 
+.sidebar img{
+  box-shadow: 0 4px 2px -2px #455a6e;
+}
+
+.Board img{
+  box-shadow: 0 4px 2px -2px #455a6e;
+  z-index: 10;
+}
+
+.square{
+  background-color: yellow;
+  width: 10px;
+  height: 10px;
+  z-index: 10;
+}
+
 .Board {
   background-color: #D6E3F4;
+  box-shadow: 0 4px 3px 0px #5A7291;
   padding: 40px;
   position: absolute;
   margin-top: 90px;
   margin-left: 470px;
   width: 1300px;
-  height: 700px;
+  height: 600px;
   border-radius: 10px;
 }
