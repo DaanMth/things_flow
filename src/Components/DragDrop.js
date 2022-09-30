@@ -96,11 +96,33 @@ const pictureList = [
         return new Promise(res => setTimeout(res, delay));
     }
 
-    const drawLine = (index) => {
-        if (index > 0) {
+    let blocks = [];
+
+    const drawLine = (id) => {
+        console.log(blocks)
+        if(blocks.length !== 2){
+            blocks.push(id);
+        }
+        if(blocks.length === 2){
             new LeaderLine(
-                document.getElementById(index - 1),
-                document.getElementById(index),
+                document.getElementById(blocks[0]),
+                document.getElementById(blocks[1]),
+                {
+                    endPlugSize: 1,
+                    startPlugSize: 1,
+                    color: '#618FCA',
+                    size: 6,
+                    default: 'fluid'
+                },
+            );
+            blocks = []
+        }
+
+        /*
+        if (board.length > 1) {
+            new LeaderLine(
+                document.getElementById(),
+                document.getElementById(id),
                 {
                     endPlug: "behind" ,
                     startPlug: "behind",
@@ -110,11 +132,11 @@ const pictureList = [
                 },
             );
 
-        }
-
+        }*/
     }
 
     const ApiCall = () => {
+        console.log(board);
         const half = Math.ceil(board.length / 2);
 
         const firstHalf = calculateInt(board.slice(0, half));
@@ -188,10 +210,10 @@ const pictureList = [
                             <div className="blocks" {...provided.droppableProps} ref={provided.innerRef}>
                                 {board.map((picture, index) => {
                                     return(
-                                        <Draggable key={picture.id} draggableId={picture.id} index={index}>
+                                        <Draggable key={picture.id + 1} draggableId={picture.id + 1} index={index}>
                                             {(provided) => (
                                                 <div className="blocks" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                                                <Picture  /*onClick={() => drawLine(index)} /*handleRemoveItem(index)}*/ url={picture.url} id={picture.id}/>
+                                                <Picture  onClick={() => drawLine(picture.id + 1)} /*handleRemoveItem(index)}*/ url={picture.url} id={picture.id + 1}/>
                                                 </div>
                                             )}
 
