@@ -79,21 +79,12 @@ const pictureList = [
         })
     }));
 
-    const handleRemoveItem = (index) => {
-        board.splice(index, 1)
-        setBoard((board) => [...board]);
-    }
-
     const calculateInt = (halfPictures) => {
         let halfInt = 0;
         halfPictures.map((picture) => {
             halfInt += picture.int
         })
         return halfInt
-    }
-
-    function timeout(delay) {
-        return new Promise(res => setTimeout(res, delay));
     }
 
     let blocks = [];
@@ -120,9 +111,7 @@ const pictureList = [
     }
 
     const ApiCall = () => {
-        console.log(board);
         const half = Math.ceil(board.length / 2);
-
         const firstHalf = calculateInt(board.slice(0, half));
         const secondHalf = calculateInt(board.slice(half));
 
@@ -183,9 +172,7 @@ const pictureList = [
                         return <Picture url={picture.url} id={picture.id} int={picture.int}/>
                     })}
                 </div>
-
             </div>
-
 
             <div className="Board" ref={drop}>
                 <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -210,18 +197,13 @@ const pictureList = [
                         )}
                     </Droppable>
                 </DragDropContext>
-
             </div>
-
-
 
             <div className="submit">
                 <button className="math" onClick={ApiCall}>Math</button>
-
                 <div className="answerText">
                     {answer}
                 </div>
-
             </div>
 
         </>
