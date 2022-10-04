@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import Picture from './Picture';
 import axios from "axios";
 import LeaderLine from 'leader-line-new';
+import Xarrow from "react-xarrows";
 import {useDrop} from 'react-dnd';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 
@@ -61,7 +62,6 @@ const pictureList = [
  function DragDrop() {
     const [board, setBoard] = useState([]);
     const [answer, setAnswer] = useState(0);
-    const [indexList, setIndex] = useState([])
 
 
     const token = `xUN1z8f3YQ6flB0ZYOWHoc`;
@@ -117,22 +117,6 @@ const pictureList = [
             );
             blocks = []
         }
-
-        /*
-        if (board.length > 1) {
-            new LeaderLine(
-                document.getElementById(),
-                document.getElementById(id),
-                {
-                    endPlug: "behind" ,
-                    startPlug: "behind",
-                    color: '#618FCA',
-                    size: 9,
-                    default: 'fluid'
-                },
-            );
-
-        }*/
     }
 
     const ApiCall = () => {
@@ -179,13 +163,13 @@ const pictureList = [
                     <div className='column'>
                         <div className='texts'>
                             <div className='column2'>
-                                <h2>Documentation</h2>
+                                <div className="text">Documentation</div>
                             </div>
                             <div className='column2'>
-                                <h2>Playground</h2>
+                                <div className="text">Playground</div>
                             </div>
                             <div className='column2'>
-                                <h2>Flows</h2>
+                                <div className="text">Flows</div>
                             </div>
 
                         </div>
@@ -214,6 +198,7 @@ const pictureList = [
                                             {(provided) => (
                                                 <div className="blocks" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
                                                 <Picture  onClick={() => drawLine(picture.id + 1)} /*handleRemoveItem(index)}*/ url={picture.url} id={picture.id + 1}/>
+                                                <div className="error">error</div>
                                                 </div>
                                             )}
 
@@ -227,6 +212,8 @@ const pictureList = [
                 </DragDropContext>
 
             </div>
+
+
 
             <div className="submit">
                 <button className="math" onClick={ApiCall}>Math</button>
