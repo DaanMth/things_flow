@@ -1,10 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useReducer, useRef, useState} from 'react';
 import Picture from './Picture';
 import axios from "axios";
 import LeaderLine from 'leader-line-new';
-import Xarrow from "react-xarrows";
 import {useDrop} from 'react-dnd';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
+import Xarrow, {useXarrow, Xwrapper} from "react-xarrows"
 
 const pictureList = [
     {
@@ -61,8 +61,9 @@ const pictureList = [
 
  function DragDrop() {
     const [board, setBoard] = useState([]);
+    const [block, setBlock] = useState([]);
+    const [arrows, setArrow] = useState([])
     const [answer, setAnswer] = useState(0);
-
 
     const token = `xUN1z8f3YQ6flB0ZYOWHoc`;
 
@@ -87,28 +88,22 @@ const pictureList = [
         return halfInt
     }
 
-    let blocks = [];
+    const arrowList = (firstBlock, secondBlock) =>{
+        setArrow((arrow) =>[...arrow, {firstBlock, secondBlock}]);
+        setBlock( []);
+        console.log(arrows);
+     }
 
-    const drawLine = (id) => {
-        console.log(blocks)
-        if(blocks.length !== 2){
-            blocks.push(id);
+    useEffect(() => {
+        if(block.length === 2)
+        {
+            arrowList(block[0], block[1]);
         }
-        if(blocks.length === 2){
-            new LeaderLine(
-                document.getElementById(blocks[0]),
-                document.getElementById(blocks[1]),
-                {
-                    endPlugSize: 1,
-                    startPlugSize: 1,
-                    color: '#618FCA',
-                    size: 6,
-                    default: 'fluid'
-                },
-            );
-            blocks = []
-        }
-    }
+    }, [block])
+
+     const drawLine = (id) => {
+         setBlock((block) =>[...block, id]);
+     }
 
     const ApiCall = () => {
         const half = Math.ceil(board.length / 2);
@@ -180,17 +175,19 @@ const pictureList = [
                         {(provided) => (
                             <div className="blocks" {...provided.droppableProps} ref={provided.innerRef}>
                                 {board.map((picture, index) => {
-                                    return(
-                                        <Draggable key={picture.id + 1} draggableId={picture.id + 1} index={index}>
-                                            {(provided) => (
-                                                <div className="blocks" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                                                <Picture  onClick={() => drawLine(picture.id + 1)} /*handleRemoveItem(index)}*/ url={picture.url} id={picture.id + 1}/>
-                                                <div className="error">error</div>
-                                                </div>
-                                            )}
+                                        return(
+                                            <Draggable key={picture.id + 1} draggableId={picture.id + 1} index={index}>
+                                                {(provided) => (
+                                                    <div className="blocks" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+                                                        <Picture  onClick={() => drawLine(picture.id + 1)} /*handleRemoveItem(index)}*/ url={picture.url} id={picture.id + 1}/>
+                                                        <div className="error">error</div>
 
-                                        </Draggable>
-                                    );
+                                                    </div>
+                                                )}
+
+                                            </Draggable>
+                                        );
+
                                 })}
                                 {provided.placeholder}
                             </div>
@@ -198,6 +195,19 @@ const pictureList = [
                     </Droppable>
                 </DragDropContext>
             </div>
+
+            <div>
+
+                {
+                    arrows.map((arrow) => {
+                        return(
+                            <Xwrapper>
+                                <Xarrow start={arrow.firstBlock} end={arrow.secondBlock}/>
+                            </Xwrapper>
+                        );
+                })}
+            </div>
+
 
             <div className="submit">
                 <button className="math" onClick={ApiCall}>Math</button>
