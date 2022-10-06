@@ -63,24 +63,25 @@ const pictureList = [
     const [board, setBoard] = useState([]);
     const [block, setBlock] = useState([]);
     const [arrows, setArrow] = useState([]);
+    const [sidebar, setSidebar] = useState([]);
     const [componentDescription, setDescription] = useState([]);
     const [firstName, setFirstName] = useState('');
     const [answer, setAnswer] = useState(0);
 
     const token = `xUN1z8f3YQ6flB0ZYOWHoc`;
 
-    const addImageToBoard = (id) => {
-        const PictureList = pictureList.filter((picture) => id === picture.id);
-        setBoard((board) => [...board, PictureList[0]])
-    };
+     const [{isOver}, drop] = useDrop(() => ({
+         accept: "image",
+         drop: (item) => addImageToBoard(item.id, item.type_id),
+         collect: (monitor) => ({
+             isOver: !!monitor.isOver(),
+         })
+     }));
 
-    const [{isOver}, drop] = useDrop(() => ({
-        accept: "image",
-        drop: (item) => addImageToBoard(item.id, item.int),
-        collect: (monitor) => ({
-            isOver: !!monitor.isOver(),
-        })
-    }));
+    const addImageToBoard = (id) => {
+        const sidebarAdd = sidebar.filter((picture) => id === picture.id);
+        setBoard((board) => [...board, sidebarAdd[0]])
+    };
 
     const calculateInt = (halfPictures) => {
         let halfInt = 0;
@@ -97,6 +98,7 @@ const pictureList = [
      }
 
     useEffect(() => {
+        //console.log(sidebar);
         if(block.length === 2)
         {
             arrowList(block[0], block[1]);
@@ -106,6 +108,24 @@ const pictureList = [
      const drawLine = (id) => {
          setBlock((block) =>[...block, id]);
      }
+
+     const getSidebarList = () => {
+         axios.post("http://localhost:9210/collection/stuff", {
+                 'type': 'run',
+                 'name': 'getSidebarComponents',
+                 'args': []
+             },
+             {
+                 headers: {
+                     'Authorization': `Bearer ${token}`,
+                     'Content-Type': 'application/json'
+                 }
+             })
+             .then(res => {
+                 setSidebar(res.data);
+             })
+     }
+
 
     const ApiCall = () => {
         const half = Math.ceil(board.length / 2);
@@ -181,9 +201,10 @@ const pictureList = [
             </div>
 
             <div className="sidebar">
+                {getSidebarList()}
                 <div className="Pictures">
-                    {pictureList.map((picture) => {
-                        return <Picture url={picture.url} id={picture.id} int={picture.int}/>
+                    {sidebar.map((picture) => {
+                        return <Picture url={picture.url} id={picture.id} type_id={picture.type_id}/>
                     })}
                 </div>
                 <div className="addComponent">
@@ -194,7 +215,7 @@ const pictureList = [
                         <div>Description</div>
                         <input id="description" name='description' type='text' onChange={event => setDescription(event.target.value)} value={componentDescription}></input>
                     </div>
-                    <button className="componentButton" onClick={newComponent}>Add Component</button>
+                    <button className="componentButton" /*onClick={newComponent}*/>Add Component</button>
                 </div>
             </div>
 
@@ -205,10 +226,10 @@ const pictureList = [
                             <div className="blocks" {...provided.droppableProps} ref={provided.innerRef}>
                                 {board.map((picture, index) => {
                                         return(
-                                            <Draggable key={picture.id + 1} draggableId={picture.id + 1} index={index}>
+                                            <Draggable key={picture.id} draggableId={picture.id} index={index}>
                                                 {(provided) => (
                                                     <div className="blocks" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                                                        <div className="connect" onClick={() => drawLine(picture.id + 1)}></div>
+                                                        <div className="connect" onClick={() => drawLine(picture.id)}></div>
                                                         <Picture url={picture.url} id={picture.id + 1}/>
                                                         <div className="error">error</div>
 

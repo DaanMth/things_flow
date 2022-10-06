@@ -1,10 +1,10 @@
 import React from 'react'
 import {useDrag} from 'react-dnd';
 
-function Picture({id, url, int,onClick}){
+function Picture({id, url, type_id,onClick}){
     const [{isDragging}, drag] = useDrag(() => ({
         type: "image",
-        item: {id: id,int: int},
+        item: {id: id,type_id: type_id},
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         })
