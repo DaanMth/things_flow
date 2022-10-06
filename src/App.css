@@ -5,6 +5,31 @@
   background: #618FCA;
 }
 
+.addComponent{
+  margin-left: 10px;
+}
+
+.componentButton{
+  border-radius: 10px;
+  box-shadow: 0 4px 2px -2px #455a6e;
+  border-style: none;
+  background-color: #5A7291;
+  width: 150px;
+  height: 40px;
+  padding: 10px;
+  margin-top: 1%;
+}
+
+.componentButton:hover{
+  border-style: none;
+  background-color: #6982a6;
+}
+
+.componentButton:active{
+  border-style: none;
+  background-color: #41546b;
+}
+
 .error{
   position: absolute;
   letter-spacing: 3px;
@@ -15,6 +40,26 @@
   margin-top: 110px;
   background-color: rgba(255, 0, 0, 0.48);
   color: white;
+}
+
+.connect{
+  position: absolute;
+  background-color: #6982a6;
+  opacity: 0.50;
+  width: 15px;
+  height: 25px;
+  margin-left: 105px;
+  margin-top: 53px;
+  z-index: 100;
+  border-radius: 10px;
+}
+
+.connect:hover{
+  background-color: #3e4d5e;
+}
+
+.connect:active{
+  background-color: #41546b;
 }
 
 .blocks{
@@ -75,7 +120,7 @@
 }
 
 .onBoard{
-  width: 10%;
+  width: 15%;
 }
 .submit{
   margin-left: 1700px;

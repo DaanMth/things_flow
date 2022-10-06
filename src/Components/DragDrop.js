@@ -62,7 +62,9 @@ const pictureList = [
  function DragDrop() {
     const [board, setBoard] = useState([]);
     const [block, setBlock] = useState([]);
-    const [arrows, setArrow] = useState([])
+    const [arrows, setArrow] = useState([]);
+    const [componentDescription, setDescription] = useState([]);
+    const [firstName, setFirstName] = useState('');
     const [answer, setAnswer] = useState(0);
 
     const token = `xUN1z8f3YQ6flB0ZYOWHoc`;
@@ -126,6 +128,23 @@ const pictureList = [
             })
     }
 
+     const newComponent = () => {
+         axios.post("http://localhost:9210/collection/stuff", {
+                 'type': 'run',
+                 "name": "add_component",
+                 "args": [firstName, componentDescription]
+             },
+             {
+                 headers: {
+                     'Authorization': `Bearer ${token}`,
+                     'Content-Type': 'application/json'
+                 }
+             })
+             .then(res => {
+                 console.log(res.data);
+             })
+     }
+
      function handleOnDragEnd(result) {
          if (!result.destination) return;
 
@@ -167,6 +186,16 @@ const pictureList = [
                         return <Picture url={picture.url} id={picture.id} int={picture.int}/>
                     })}
                 </div>
+                <div className="addComponent">
+                    <div>
+                        <div className="text">Add a Component</div>
+                        <div>Name</div>
+                        <input id="name" name='name' type='text' onChange={event => setFirstName(event.target.value)} value={firstName}></input>
+                        <div>Description</div>
+                        <input id="description" name='description' type='text' onChange={event => setDescription(event.target.value)} value={componentDescription}></input>
+                    </div>
+                    <button className="componentButton" onClick={newComponent}>Add Component</button>
+                </div>
             </div>
 
             <div className="Board" ref={drop}>
@@ -179,7 +208,8 @@ const pictureList = [
                                             <Draggable key={picture.id + 1} draggableId={picture.id + 1} index={index}>
                                                 {(provided) => (
                                                     <div className="blocks" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                                                        <Picture  onClick={() => drawLine(picture.id + 1)} /*handleRemoveItem(index)}*/ url={picture.url} id={picture.id + 1}/>
+                                                        <div className="connect" onClick={() => drawLine(picture.id + 1)}></div>
+                                                        <Picture url={picture.url} id={picture.id + 1}/>
                                                         <div className="error">error</div>
 
                                                     </div>
@@ -217,7 +247,10 @@ const pictureList = [
             </div>
 
         </>
+
+
     );
+
 }
 
 export default DragDrop
