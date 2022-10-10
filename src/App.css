@@ -6,11 +6,15 @@
 }
 
 .addComponent{
+  visibility: hidden;
   margin-left: 10px;
 }
 
+
 .componentButton{
+  margin-left: 170px;
   border-radius: 10px;
+  color: white;
   box-shadow: 0 4px 2px -2px #455a6e;
   border-style: none;
   background-color: #5A7291;
@@ -64,6 +68,11 @@
 
 .blocks{
   display: flex;
+}
+
+.value{
+  width: 60px;
+  height: 30px;
 }
 
 .leader-line {

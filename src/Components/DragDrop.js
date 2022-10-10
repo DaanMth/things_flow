@@ -5,6 +5,10 @@ import LeaderLine from 'leader-line-new';
 import {useDrop} from 'react-dnd';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import Xarrow, {useXarrow, Xwrapper} from "react-xarrows"
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 const pictureList = [
     {
@@ -59,29 +63,62 @@ const pictureList = [
     },
 ]
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+};
+
  function DragDrop() {
     const [board, setBoard] = useState([]);
     const [block, setBlock] = useState([]);
     const [arrows, setArrow] = useState([]);
     const [sidebar, setSidebar] = useState([]);
+    const [modalValue, setmodalValue] = useState([]);
     const [componentDescription, setDescription] = useState([]);
     const [firstName, setFirstName] = useState('');
+    const [modal, setModal] = useState([{name: 'null', description: 'null'}]);
     const [answer, setAnswer] = useState(0);
+     const [open, setOpen] = React.useState(false);
+
+     const handleOpen = (id) => {
+         const addModal = board.filter((picture) => id === picture.id);
+         setModal(addModal);
+         setOpen(true);
+     }
+     const handleClose = () => setOpen(false);
+
+     const saveValue = (id) => {
+         const boardBlock = board.filter((picture) => id === picture.id);
+         boardBlock[0].number = modalValue;
+         console.log(boardBlock);
+     }
 
     const token = `xUN1z8f3YQ6flB0ZYOWHoc`;
 
      const [{isOver}, drop] = useDrop(() => ({
          accept: "image",
-         drop: (item) => addImageToBoard(item.id, item.type_id),
+         drop: (item) => addImageToBoard(item.id),
          collect: (monitor) => ({
              isOver: !!monitor.isOver(),
          })
      }));
 
     const addImageToBoard = (id) => {
+        let r = (Math.random() + 1).toString(36);
+        console.log(r);
         const sidebarAdd = sidebar.filter((picture) => id === picture.id);
+        sidebarAdd[0].id = r;
+        console.log(sidebarAdd[0].id);
         setBoard((board) => [...board, sidebarAdd[0]])
     };
+
+
 
     const calculateInt = (halfPictures) => {
         let halfInt = 0;
@@ -98,7 +135,6 @@ const pictureList = [
      }
 
     useEffect(() => {
-        //console.log(sidebar);
         if(block.length === 2)
         {
             arrowList(block[0], block[1]);
@@ -112,7 +148,7 @@ const pictureList = [
      const getSidebarList = () => {
          axios.post("http://localhost:9210/collection/stuff", {
                  'type': 'run',
-                 'name': 'getSidebarComponents',
+                 'name': 'getSidebarComponentList',
                  'args': []
              },
              {
@@ -126,8 +162,7 @@ const pictureList = [
              })
      }
 
-
-    const ApiCall = () => {
+     const ApiCall = () => {
         const half = Math.ceil(board.length / 2);
         const firstHalf = calculateInt(board.slice(0, half));
         const secondHalf = calculateInt(board.slice(half));
@@ -178,6 +213,8 @@ const pictureList = [
     return (
 
         <>
+
+
             <div className="header">
                 <row>
                     <div className='column'>
@@ -207,16 +244,16 @@ const pictureList = [
                         return <Picture url={picture.url} id={picture.id} type_id={picture.type_id}/>
                     })}
                 </div>
-                <div className="addComponent">
-                    <div>
-                        <div className="text">Add a Component</div>
-                        <div>Name</div>
-                        <input id="name" name='name' type='text' onChange={event => setFirstName(event.target.value)} value={firstName}></input>
-                        <div>Description</div>
-                        <input id="description" name='description' type='text' onChange={event => setDescription(event.target.value)} value={componentDescription}></input>
+                    <div className="addComponent">
+                        <div>
+                            <div className="text">Add a Component</div>
+                            <div>Name</div>
+                            <input id="name" name='name' type='text' onChange={event => setFirstName(event.target.value)} value={firstName}/>
+                            <div>Description</div>
+                            <input id="description" name='description' type='text' onChange={event => setDescription(event.target.value)} value={componentDescription}/>
+                        </div>
+                        <button className="componentButton" /*onClick={newComponent}*/>Add Component</button>
                     </div>
-                    <button className="componentButton" /*onClick={newComponent}*/>Add Component</button>
-                </div>
             </div>
 
             <div className="Board" ref={drop}>
@@ -225,20 +262,19 @@ const pictureList = [
                         {(provided) => (
                             <div className="blocks" {...provided.droppableProps} ref={provided.innerRef}>
                                 {board.map((picture, index) => {
-                                        return(
-                                            <Draggable key={picture.id} draggableId={picture.id} index={index}>
-                                                {(provided) => (
-                                                    <div className="blocks" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-                                                        <div className="connect" onClick={() => drawLine(picture.id)}></div>
-                                                        <Picture url={picture.url} id={picture.id + 1}/>
-                                                        <div className="error">error</div>
+                                    return(
+                                        <Draggable key={picture.id} draggableId={picture.id} index={index}>
+                                            {(provided) => (
+                                                <div className="blocks" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+                                                    <Picture url={picture.url} onClick={() => handleOpen(picture.id)} id={picture.id}/>
+                                                    <div className="connect" onClick={() => drawLine(picture.id)}/>
+                                                    <div className="error">error</div>
+                                                </div>
 
-                                                    </div>
-                                                )}
+                                            )}
 
-                                            </Draggable>
-                                        );
-
+                                        </Draggable>
+                                    );
                                 })}
                                 {provided.placeholder}
                             </div>
@@ -247,8 +283,29 @@ const pictureList = [
                 </DragDropContext>
             </div>
 
-            <div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        {modal[0].name}
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        {modal[0].description}
+                    </Typography>
+                    <div>
+                        <br/>
+                        <h4>Value:</h4>
+                        <input className="value" id="description" name='description' type='number' onChange={event => setmodalValue(event.target.value)}/>
+                        <button className="componentButton" onClick={() => saveValue(modal[0].id)}>{modal[0].name} the values</button>
+                    </div>
+                </Box>
+            </Modal>
 
+            <div>
                 {
                     arrows.map((arrow) => {
                         return(
@@ -258,7 +315,6 @@ const pictureList = [
                         );
                 })}
             </div>
-
 
             <div className="submit">
                 <button className="math" onClick={ApiCall}>Math</button>
