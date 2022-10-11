@@ -80,6 +80,7 @@ const style = {
     const [arrows, setArrow] = useState([]);
     const [sidebar, setSidebar] = useState([]);
     const [modalValue, setmodalValue] = useState([]);
+    const [calculateValue, setCalculateValue] = useState([]);
     const [componentDescription, setDescription] = useState([]);
     const [firstName, setFirstName] = useState('');
     const [modal, setModal] = useState([{name: 'null', description: 'null'}]);
@@ -110,7 +111,7 @@ const style = {
      }));
 
     const addImageToBoard = (id) => {
-        let r = (Math.random() + 1).toString(36);
+        let r = (Math.random() + 1).toString(36).substring(7);
         console.log(r);
         const sidebarAdd = sidebar.filter((picture) => id === picture.id);
         sidebarAdd[0].id = r;
@@ -118,14 +119,23 @@ const style = {
         setBoard((board) => [...board, sidebarAdd[0]])
     };
 
+    let calculate = [];
 
+    const calculateBoard = () => {
+        board.map((block) => {
+            console.log(block);
+           if(block.name === "first value"){
+               calculate.push(block.number);
+            }
+            else{
+               calculate.push(block);
+            }
+            if(calculate.length === 2){
+               ApiCall(calculate);
+               calculate = [answer];
+            }
 
-    const calculateInt = (halfPictures) => {
-        let halfInt = 0;
-        halfPictures.map((picture) => {
-            halfInt += picture.int
         })
-        return halfInt
     }
 
     const arrowList = (firstBlock, secondBlock) =>{
@@ -162,15 +172,12 @@ const style = {
              })
      }
 
-     const ApiCall = () => {
-        const half = Math.ceil(board.length / 2);
-        const firstHalf = calculateInt(board.slice(0, half));
-        const secondHalf = calculateInt(board.slice(half));
+     const ApiCall = (calculate) => {
 
         axios.post("http://localhost:9210/collection/stuff", {
                 'type': 'run',
-                'name': 'multiply',
-                'args': [parseInt(firstHalf, 10), parseInt(secondHalf, 10)]
+                'name': calculate[1].functionality,
+                'args': [parseInt(calculate[0]), parseInt(calculate[1].number)]
             },
             {
                 headers: {
@@ -296,6 +303,10 @@ const style = {
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         {modal[0].description}
                     </Typography>
+                    <br/>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        current value: <h4>{modal[0].number}</h4>
+                    </Typography>
                     <div>
                         <br/>
                         <h4>Value:</h4>
@@ -317,7 +328,7 @@ const style = {
             </div>
 
             <div className="submit">
-                <button className="math" onClick={ApiCall}>Math</button>
+                <button className="math" onClick={calculateBoard}>Math</button>
                 <div className="answerText">
                     {answer}
                 </div>
