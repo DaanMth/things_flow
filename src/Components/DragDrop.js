@@ -1,12 +1,10 @@
-import React, {useEffect, useReducer, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Picture from './Picture';
 import axios from "axios";
-import LeaderLine from 'leader-line-new';
 import {useDrop} from 'react-dnd';
-import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
-import Xarrow, {useXarrow, Xwrapper} from "react-xarrows"
+import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
+import Xarrow, {Xwrapper} from "react-xarrows"
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
@@ -80,7 +78,6 @@ const style = {
     const [arrows, setArrow] = useState([]);
     const [sidebar, setSidebar] = useState([]);
     const [modalValue, setmodalValue] = useState([]);
-    const [calculateValue, setCalculateValue] = useState([]);
     const [componentDescription, setDescription] = useState([]);
     const [firstName, setFirstName] = useState('');
     const [modal, setModal] = useState([{name: 'null', description: 'null'}]);
@@ -97,10 +94,7 @@ const style = {
      const saveValue = (id) => {
          const boardBlock = board.filter((picture) => id === picture.id);
          boardBlock[0].number = modalValue;
-         console.log(boardBlock);
      }
-
-    const token = `xUN1z8f3YQ6flB0ZYOWHoc`;
 
      const [{isOver}, drop] = useDrop(() => ({
          accept: "image",
@@ -111,30 +105,31 @@ const style = {
      }));
 
     const addImageToBoard = (id) => {
-        let r = (Math.random() + 1).toString(36).substring(7);
-        console.log(r);
-        const sidebarAdd = sidebar.filter((picture) => id === picture.id);
-        sidebarAdd[0].id = r;
+        let sidebarAdd = sidebar.filter((picture) => id === picture.id);
+        sidebarAdd[0].id = (Math.random() + 1).toString(36).substring(2);
         console.log(sidebarAdd[0].id);
-        setBoard((board) => [...board, sidebarAdd[0]])
+        setBoard((board) => [...board, sidebarAdd[0]]);
     };
 
-    let calculate = [];
+     let calculate = [];
 
-    const calculateBoard = () => {
-        board.map((block) => {
-            console.log(block);
-           if(block.name === "first value"){
-               calculate.push(block.number);
-            }
-            else{
-               calculate.push(block);
-            }
-            if(calculate.length === 2){
-               ApiCall(calculate);
-               calculate = [answer];
-            }
+    const calculateBoard = async() => {
+        board.map(async(block) => {
+            console.log("map")
 
+            if (block.name === "first value") {
+                calculate = [block.number];
+                console.log("length of array:" + calculate.length);
+
+            }
+            if (block.name !== "first value" && calculate.length !== 2) {
+                calculate.push(block);
+                console.log("length of array:" + calculate.length);
+            }
+            if (calculate.length === 2) {
+                await ApiCall(calculate);
+                console.log("length of array:" + calculate.length);
+            }
         })
     }
 
@@ -155,6 +150,8 @@ const style = {
          setBlock((block) =>[...block, id]);
      }
 
+     const token = `xUN1z8f3YQ6flB0ZYOWHoc`;
+
      const getSidebarList = () => {
          axios.post("http://localhost:9210/collection/stuff", {
                  'type': 'run',
@@ -172,12 +169,11 @@ const style = {
              })
      }
 
-     const ApiCall = (calculate) => {
-
-        axios.post("http://localhost:9210/collection/stuff", {
+     const ApiCall = async(calculated) => {
+          axios.post("http://localhost:9210/collection/stuff", {
                 'type': 'run',
-                'name': calculate[1].functionality,
-                'args': [parseInt(calculate[0]), parseInt(calculate[1].number)]
+                'name': calculated[1].functionality,
+                'args': [parseInt(calculated[0]), parseInt(calculated[1].number)]
             },
             {
                 headers: {
@@ -186,7 +182,9 @@ const style = {
                 }
             })
             .then(res => {
-                setAnswer(res.data);
+                 setAnswer(res.data);
+                calculate = [(res.data)];
+                console.log(calculate, "inside tthe api");
             })
     }
 
@@ -311,7 +309,7 @@ const style = {
                         <br/>
                         <h4>Value:</h4>
                         <input className="value" id="description" name='description' type='number' onChange={event => setmodalValue(event.target.value)}/>
-                        <button className="componentButton" onClick={() => saveValue(modal[0].id)}>{modal[0].name} the values</button>
+                        <button className="componentButton" onClick={() => saveValue(modal[0].id)}>Save</button>
                     </div>
                 </Box>
             </Modal>
