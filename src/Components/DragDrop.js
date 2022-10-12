@@ -119,8 +119,7 @@ const style = {
 
             if (block.name === "first value") {
                 calculate = [block.number];
-                console.log("length of array:" + calculate.length);
-
+                console.log("length dof array:" + calculate.length);
             }
             if (block.name !== "first value" && calculate.length !== 2) {
                 calculate.push(block);
