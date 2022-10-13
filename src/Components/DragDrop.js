@@ -111,25 +111,27 @@ const style = {
         setBoard((board) => [...board, sidebarAdd[0]]);
     };
 
-     let calculate = [];
+    let y = structuredClone(board);
 
-    const calculateBoard = async() => {
-        board.map(async(block) => {
-            console.log("map")
-
-            if (block.name === "first value") {
-                calculate = [block.number];
-                console.log("length dof array:" + calculate.length);
+    const calculateBoard = (calculatedAnswer) => {
+        let x;
+        console.log("tedst");
+        if(calculatedAnswer === null){
+            x = [y.find(b => b.name === "first value").number];
+            y.splice(0,1);
+            x.push(y[0]);
+            ApiCall(x);
+        }
+        else{
+            y.splice(0,1);
+            if(y.length === 0){
+                setAnswer((calculatedAnswer).data);
+                return;
             }
-            if (block.name !== "first value" && calculate.length !== 2) {
-                calculate.push(block);
-                console.log("length of array:" + calculate.length);
-            }
-            if (calculate.length === 2) {
-                await ApiCall(calculate);
-                console.log("length of array:" + calculate.length);
-            }
-        })
+            x = [(calculatedAnswer).data];
+            x.push(y[0]);
+            ApiCall(x);
+        }
     }
 
     const arrowList = (firstBlock, secondBlock) =>{
@@ -168,7 +170,7 @@ const style = {
              })
      }
 
-     const ApiCall = async(calculated) => {
+     function ApiCall (calculated){
           axios.post("http://localhost:9210/collection/stuff", {
                 'type': 'run',
                 'name': calculated[1].functionality,
@@ -181,9 +183,7 @@ const style = {
                 }
             })
             .then(res => {
-                 setAnswer(res.data);
-                calculate = [(res.data)];
-                console.log(calculate, "inside tthe api");
+                calculateBoard(res);
             })
     }
 
@@ -325,7 +325,7 @@ const style = {
             </div>
 
             <div className="submit">
-                <button className="math" onClick={calculateBoard}>Math</button>
+                <button className="math" onClick={() => calculateBoard(null)}>Math</button>
                 <div className="answerText">
                     {answer}
                 </div>
