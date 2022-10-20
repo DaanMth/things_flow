@@ -112,24 +112,25 @@ const style = {
     };
 
     let y = structuredClone(board);
+    let z = structuredClone(arrows)
 
     const calculateBoard = (calculatedAnswer) => {
         let x;
-        console.log("tedst");
+        console.log("test");
         if(calculatedAnswer === null){
-            x = [y.find(b => b.name === "first value").number];
-            y.splice(0,1);
-            x.push(y[0]);
+            x = [y.find(b => b.id === z[0].firstBlock).number];
+            x.push(y.find(b => b.id === z[0].secondBlock));
+            z.splice(0,1);
             ApiCall(x);
         }
         else{
-            y.splice(0,1);
-            if(y.length === 0){
+            if(z.length === 0){
                 setAnswer((calculatedAnswer).data);
                 return;
             }
             x = [(calculatedAnswer).data];
-            x.push(y[0]);
+            x.push(y.find(b => b.id === z[0].secondBlock));
+            z.splice(0,1);
             ApiCall(x);
         }
     }
