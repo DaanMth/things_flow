@@ -133,7 +133,7 @@ const style = {
         if(calculatedAnswer === null){
             x = [y.find(b => b.id === z[0].firstBlock).number];
             x.push(secondBlock);
-            console.log(x, 'this is x')
+            console.log(x, 'this is ')
             z.splice(0,1);
             runFlow(x);
         }
