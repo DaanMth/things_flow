@@ -10,8 +10,6 @@ function Picture({id, url, type_id,onClick}){
         })
     }))
 
-
-
     return <img
                 id={id}
                 ref={drag}
@@ -24,5 +22,4 @@ function Picture({id, url, type_id,onClick}){
             />;
 
 }
-
 export default Picture
