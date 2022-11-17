@@ -115,7 +115,7 @@ function DragDrop() {
         let secondBlock = y.find(b => b.id === z[0].secondBlock)
         if ((secondBlock.functionality.length >= 2 && secondBlock.functionality.length < 5) || (flowSwitch === true)) {
             if (secondBlock.functionality.length === 1) {
-                console.log("tedssssst")
+                console.log("tedsssssst")
                 let parsedAnswer = JSON.parse(calculatedAnswer[0]);
                 x = [parsedAnswer];
                 x.push(secondBlock.functionality[0]);
@@ -293,28 +293,7 @@ function DragDrop() {
     }
 
     return (
-        <>
-            <div className="header">
-                <row>
-                    <div className='column'>
-                        <img className='logo' src='./Images/thingsLogo.png' alt="Paris"/>
-                    </div>
-                    <div className='column'>
-                        <div className='texts'>
-                            <div className='column2'>
-                                <div className="text">Documentation</div>
-                            </div>
-                            <div className='column2'>
-                                <div className="text">Playground</div>
-                            </div>
-                            <div className='column2'>
-                                <div className="text">Flows</div>
-                            </div>
-
-                        </div>
-                    </div>
-                </row>
-            </div>
+        <div className={"dragDrop"}>
 
             <Box sx={{width: '100%'}}>
                 <Collapse in={visibilityAlert}>
@@ -627,12 +606,12 @@ function DragDrop() {
             </div>
             <br/>
             <br/>
-            <br/>
+                <br/>
             <div className="submit">
                 <button className="math" onClick={() => handleOpenSavemodal()}>Save</button>
             </div>
 
-        </>
+        </div>
 
 
     );

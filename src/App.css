@@ -1,3 +1,6 @@
+
+/* ---------------------------------- Flow page css ------------------------------------ */
+
 .App {
   position: absolute;
   width: 100%;
@@ -83,11 +86,15 @@
   background-color: white;
   box-shadow: 0 4px 2px -2px #5A7291;
   width: 100%;
+  z-index: 100000;
   height: 3vw;
 }
 
+
 .text{
   font-weight: bold;
+  text-decoration: none;
+  color: black;
 }
 
 .logo{
@@ -233,4 +240,35 @@
   width: 1300px;
   height: 600px;
   border-radius: 10px;
+}
+
+/* ---------------------------------- Home page css ------------------------------------ */
+
+.wholePage{
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 94%;
+  background-image: url("background.png");
+  background-size: cover;
+}
+
+.homeButton{
+  font-size: 15px;
+  letter-spacing: 2px;
+  position: absolute;
+  text-decoration: none;
+  margin-top: 400px;
+  margin-left: 600px;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #3A5985;
+  border: none;
+}
+
+.thingsFlow{
+  margin-left: 260px;
+  margin-top: 100px;
+  position: absolute;
 }
