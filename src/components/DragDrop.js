@@ -13,6 +13,7 @@ import Collapse from '@mui/material/Collapse';
 
 const style = {
     position: 'absolute',
+    borderRadius: '5px',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -35,6 +36,7 @@ function DragDrop() {
     const [modal, setModal] = useState([{name: 'null', description: 'null'}]);
     const [answer, setAnswer] = useState(0);
     const [open, setOpen] = React.useState(false);
+    const [sidebarFull, setSidebarFull] = React.useState(false);
     const [openSidebar, setOpenSidebar] = React.useState(false);
     const [openSaveModal, setOpenSaveModal] = React.useState(false);
     const [savedName, setSavedName] = useState("");
@@ -115,7 +117,7 @@ function DragDrop() {
         let secondBlock = y.find(b => b.id === z[0].secondBlock)
         if ((secondBlock.functionality.length >= 2 && secondBlock.functionality.length < 5) || (flowSwitch === true)) {
             if (secondBlock.functionality.length === 1) {
-                console.log("tedsssssst")
+                console.log("tesssst")
                 let parsedAnswer = JSON.parse(calculatedAnswer[0]);
                 x = [parsedAnswer];
                 x.push(secondBlock.functionality[0]);
@@ -240,25 +242,29 @@ function DragDrop() {
                 console.log(err);
             })
             .then(res => {
-                console.log(res.data,);
+                console.log(res.data);
             })
     }
 
     //API call to get the components inside the sidebar
     const getSidebarList = () => {
-        axios.post("http://localhost:9210/collection/Collectie_Daan", {
-                'type': 'run',
-                'name': 'getSidebarList'
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(res => {
-                setSidebar(res.data);
-            })
+        if(sidebarFull === false){
+            axios.post("http://localhost:9210/collection/Collectie_Daan", {
+                    'type': 'run',
+                    'name': 'getSidebarList'
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(res => {
+                    setSidebar(res.data);
+                    setSidebarFull(true);
+                })
+        }
+
     }
 
     //API call that runs all the functionalities of the components on the board
@@ -364,7 +370,8 @@ function DragDrop() {
                         {(provided) => (
                             <div className="blocks" {...provided.droppableProps} ref={provided.innerRef}>
                                 {board.map((picture, index) => {
-                                    return (
+                                    if(picture.sort === "beginComponent"){
+                                        return(
                                         <Draggable key={picture.id} draggableId={picture.id} index={index}>
                                             {(provided) => (
                                                 <div
@@ -372,14 +379,54 @@ function DragDrop() {
                                                     ref={provided.innerRef}>
                                                     <Picture url={picture.url} onClick={() => handleOpen(picture.id)}
                                                              id={picture.id}/>
-                                                    <div className="connect" onClick={() => drawLine(picture.id)}/>
-                                                    <div className="error">error</div>
+                                                    <div className="connect" onClick={() => drawLine(picture.id)}><div className={"outputText"}>O</div></div>
+                                                    <div className="error" >+</div>
                                                 </div>
 
                                             )}
-
                                         </Draggable>
-                                    );
+
+                                        )}
+                                    if(picture.sort === "endComponent"){
+                                        return(
+                                            <Draggable key={picture.id} draggableId={picture.id} index={index}>
+                                                {(provided) => (
+                                                    <div
+                                                        className="blocks" {...provided.draggableProps} {...provided.dragHandleProps}
+                                                        ref={provided.innerRef}>
+                                                        <Picture url={picture.url} onClick={() => handleOpen(picture.id)}
+                                                                 id={picture.id}/>
+                                                        <div className="arrowConnect" onClick={() => drawLine(picture.id)}><div className={"inputText"}>I</div></div>
+                                                        <div className="error" >+</div>
+                                                    </div>
+
+                                                )}
+                                            </Draggable>
+                                        )}
+                                    else {
+                                        return (
+                                            <Draggable key={picture.id} draggableId={picture.id} index={index}>
+                                                {(provided) => (
+                                                    <div
+                                                        className="blocks" {...provided.draggableProps} {...provided.dragHandleProps}
+                                                        ref={provided.innerRef}>
+                                                        <Picture url={picture.url}
+                                                                 onClick={() => handleOpen(picture.id)}
+                                                                 id={picture.id}/>
+                                                        <div className="connect" onClick={() => drawLine(picture.id)}>
+                                                            <div className={"outputText"}>O</div>
+                                                        </div>
+                                                        <div className="arrowConnect"
+                                                             onClick={() => drawLine(picture.id)}>
+                                                            <div className={"inputText"}>I</div>
+                                                        </div>
+                                                        <div className="error">+</div>
+                                                    </div>
+
+                                                )}
+                                            </Draggable>
+                                        )
+                                    }
                                 })}
                                 {provided.placeholder}
                             </div>
@@ -407,6 +454,7 @@ function DragDrop() {
                                         {modal[0].description}
                                     </Typography>
                                     <br/>
+                                    <hr/>
                                     <Typography id="modal-modal-description" sx={{mt: 2}}>
                                         <div className={"fileTitle"}>Current file:</div>
                                         <div className={"fileBox"}>{fileName}</div>
@@ -431,6 +479,7 @@ function DragDrop() {
                                         {modal[0].description}
                                     </Typography>
                                     <br/>
+                                    <hr/>
                                     <h4>From:</h4>
                                     <select value={middleValue[0]} id="channels" name="channels"
                                             onChange={event => middleValue.splice(0, 1, event.target.value)}>
@@ -460,6 +509,7 @@ function DragDrop() {
                                         {modal[0].description}
                                     </Typography>
                                     <br/>
+                                    <hr/>
                                     <Typography id="modal-modal-description" sx={{mt: 2}}>
                                         current value: <h4>{modal[0].number}</h4>
                                     </Typography>
@@ -498,6 +548,7 @@ function DragDrop() {
                                         {modal[0].description}
                                     </Typography>
                                     <br/>
+                                    <hr/>
                                     <h4>Channels:</h4>
                                     <select value={modalValue} id="channels" name="channels"
                                             onChange={event => setmodalValue(event.target.value)}>

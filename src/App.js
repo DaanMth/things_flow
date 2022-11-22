@@ -5,6 +5,8 @@ import {HTML5Backend} from 'react-dnd-html5-backend';
 import DragDrop from './components/DragDrop';
 import Header from './components/Header';
 import HomePage from './components/HomePage';
+import Documentation from './components/Documentation';
+import Flows from './components/Flows';
 
 function App() {
 
@@ -15,7 +17,9 @@ function App() {
                   <Header/>
                   <Routes>
                       <Route path="dragDrop" element={<DragDrop/>} />
-                      <Route path="homePage" element={<HomePage/>} />
+                      <Route path="/" element={<HomePage/>} />
+                      <Route path="documentation" element={<Documentation/>} />
+                      <Route path="flows" element={<Flows/>}/>
                   </Routes>
               </BrowserRouter>
           </div>

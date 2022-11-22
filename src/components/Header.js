@@ -6,18 +6,18 @@ function Header() {
     <div className="header">
         <row>
             <div className='column'>
-                <img className='logo' src='./Images/thingsLogo.png' alt="Paris"/>
+                <Link to={"/"}><img className='logo' src='./Images/thingsLogo.png' alt="Paris"/></Link>
             </div>
             <div className='column'>
                 <div className='texts'>
                     <div className='column2'>
-                        <Link to={"/"} className="text">Documentation</Link>
+                        <Link to={"/Documentation"} className="text">Documentation</Link>
                     </div>
                     <div className='column2'>
                         <Link to={"/dragDrop"} className="text">Playground</Link>
                     </div>
                     <div className='column2'>
-                        <Link to={"/homePage"} className="text">Flows</Link>
+                        <Link to={"/flows"} className="text">Flows</Link>
                     </div>
 
                 </div>
