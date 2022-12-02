@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Picture from './Picture';
+import BeginModal from './Modals/boardModals/BeginModal';
 import axios from "axios";
 import {useDrop} from 'react-dnd';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
@@ -10,6 +11,19 @@ import Modal from '@mui/material/Modal';
 import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
 import {useLocation} from "react-router-dom";
+import ConvertModal from "./Modals/boardModals/ConvertModal";
+import TitleModal from "./Modals/boardModals/TitleModal";
+import ChangeTitleModal from "./Modals/boardModals/ChangeTitleModal";
+import MailModal from "./Modals/boardModals/MailModal";
+import DutyCallsModal from "./Modals/boardModals/DutyCallsModal";
+import DefaultModal from "./Modals/boardModals/DefaultModal";
+import PremadeModals from "./Modals/sidebarModals/PremadeModals";
+import CustomModals from "./Modals/sidebarModals/CustomModals";
+import SaveComponentModal from "./Modals/buttonModals/SaveComponentModal";
+import SaveListModal from "./Modals/buttonModals/SaveListModal";
+import BeginComponent from "./boardComponents/BeginComponent";
+import EndComponent from "./boardComponents/EndComponent";
+import MiddleComponent from "./boardComponents/MiddleComponent";
 
 
 const style = {
@@ -29,7 +43,7 @@ function DragDrop(flowBoard) {
     const [block, setBlock] = useState([]);
     const [arrows, setArrow] = useState([]);
     const [sidebar, setSidebar] = useState([]);
-    const [modalValue, setmodalValue] = useState([]);
+    const [modalValue, setModalValue] = useState([]);
     const [middleValue, setMiddleValue] = useState([]);
     const [fileName, setFileName] = useState([]);
     const [componentDescription, setDescription] = useState([]);
@@ -100,8 +114,9 @@ function DragDrop(flowBoard) {
         })
     }));
 
+    //Fills the board with the given components from the Flows page
     const generateBoard = (flows) => {
-        if(location.state !== null){
+        if (location.state !== null) {
             flows.map((flow) => {
                 console.log(flow,)
                 let sidebarAdd = sidebar.filter((picture) => flow.functionality === picture.functionality);
@@ -113,6 +128,7 @@ function DragDrop(flowBoard) {
         }
     }
 
+    //Remove all the items that are currently on the board
     const emptyBoard = () => {
         setBoard([]);
     }
@@ -124,8 +140,6 @@ function DragDrop(flowBoard) {
         console.log(sidebarAdd[0],);
         setBoard((board) => [...board, sidebarAdd[0]]);
     };
-
-
 
     //Gives a success alert when a flow ran successfully
     const alerting = (bool) => {
@@ -143,53 +157,67 @@ function DragDrop(flowBoard) {
     let z = structuredClone(arrows);
     let flowSwitch = false;
 
+    //Calculates the first part of the flow
+    const firstCalculation = (x, secondBlock, calculatedAnswer) => {
+        if ((secondBlock.functionality.length >= 2 && secondBlock.functionality.length < 5) || (flowSwitch === true)) {
+            if (secondBlock.functionality.length === 1) {
+                let parsedAnswer = JSON.parse(calculatedAnswer[0]);
+                x = [parsedAnswer];
+                x.push(secondBlock.functionality[0]);
+                secondBlock.functionality.splice(0, 1);
+                z.splice(0, 1);
+                flowSwitch = false;
+                alerting(true);
+                runFlow(x);
+                return;
+            }
+            if (secondBlock.functionality.length === 4) {
+                console.log(secondBlock.functionality);
+                secondBlock.functionality.splice(-1, 1);
+                secondBlock.functionality.splice(0, 1);
+            }
+            x = [y.find(b => b.id === z[0].firstBlock).number];
+            x.push(secondBlock.functionality[0]);
+            secondBlock.functionality.splice(0, 1);
+            flowSwitch = true;
+            console.log(x)
+            runFlow(x);
+        }
+    }
+
+    //Calculates the part of the flow when the calculated answer still is null
+    const secondCalculation = (x, secondBlock) => {
+        x = [y.find(b => b.id === z[0].firstBlock).number];
+        x.push(secondBlock);
+        z.splice(0, 1);
+        runFlow(x);
+    }
+
+    //Calculates the part of the flow when the calculated answer is "object"
+    const thirdCalculation = (x, secondBlock, calculatedAnswer) => {
+        let parsedAnswer = JSON.parse(calculatedAnswer[0]);
+        x = [parsedAnswer];
+        x.push(secondBlock);
+        z.splice(0, 1);
+        runFlow(x);
+        alerting(true);
+    }
+
     //Runs the functions inside the board
     const calculateBoard = (calculatedAnswer) => {
         console.log(board);
         let x;
-        console.log(calculatedAnswer,);
+        console.log(calculatedAnswer);
         let secondBlock = y.find(b => b.id === z[0].secondBlock)
         console.log(secondBlock, calculatedAnswer);
-        if(secondBlock.functionality !== "mail") {
-            if ((secondBlock.functionality.length >= 2 && secondBlock.functionality.length < 5) || (flowSwitch === true)) {
-                if (secondBlock.functionality.length === 1) {
-                    let parsedAnswer = JSON.parse(calculatedAnswer[0]);
-                    x = [parsedAnswer];
-                    x.push(secondBlock.functionality[0]);
-                    secondBlock.functionality.splice(0, 1);
-                    z.splice(0, 1);
-                    flowSwitch = false;
-                    alerting(true);
-                    runFlow(x);
-                    return;
-                }
-                if (secondBlock.functionality.length === 4) {
-                    console.log(secondBlock.functionality);
-                    secondBlock.functionality.splice(-1, 1);
-                    secondBlock.functionality.splice(0, 1);
-                }
-                x = [y.find(b => b.id === z[0].firstBlock).number];
-                x.push(secondBlock.functionality[0]);
-                secondBlock.functionality.splice(0, 1);
-                flowSwitch = true;
-                console.log(x)
-                runFlow(x);
-                return;
-            }
+        if (secondBlock.functionality !== "mail") {
+            firstCalculation(x, secondBlock, calculatedAnswer);
         }
         if (calculatedAnswer === null) {
-            x = [y.find(b => b.id === z[0].firstBlock).number];
-            x.push(secondBlock);
-            z.splice(0, 1);
-            runFlow(x);
+            secondCalculation(x, secondBlock);
         }
         if (calculatedAnswer[1] === "object") {
-            let parsedAnswer = JSON.parse(calculatedAnswer[0]);
-            x = [parsedAnswer];
-            x.push(secondBlock);
-            z.splice(0, 1);
-            runFlow(x);
-            alerting(true);
+            thirdCalculation(x, secondBlock, calculatedAnswer);
         } else {
             if (z.length === 0) {
                 setAnswer((calculatedAnswer).data);
@@ -311,41 +339,39 @@ function DragDrop(flowBoard) {
     //API call to get the components inside the sidebar
     const getSidebarList = () => {
         console.log(flowBoard)
-            axios.post("http://localhost:9210/collection/Collectie_Daan", {
-                    'type': 'run',
-                    'name': 'getSidebarList'
-                },
-                {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(res => {
-                    setSidebar(res.data);
-                    generateBoard(location.state);
-                })
+        axios.post("http://localhost:9210/collection/Collectie_Daan", {
+                'type': 'run',
+                'name': 'getSidebarList'
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => {
+                setSidebar(res.data);
+                generateBoard(location.state);
+            })
 
     }
 
-    //Save a flow as a list
-    const saveAsList = () => {
+    //Changes the board component to a list so it can be added to the list page
+    const reformFlowToList = () => {
         let y = structuredClone(board);
         let z = [];
         y.map((component) => {
-            if(component.number !== undefined){
+            if (component.number !== undefined) {
                 z.push(
                     {
                         functionality: component.functionality,
                         number: component.number
                     }
                 )
-            }
-            else{
-                component.functionality.map((flowComponent) =>
-                {
-                    if(flowComponent.functionality !== "none"){
-                        if(flowComponent.functionality !== "sendDutyCalls"){
+            } else {
+                component.functionality.map((flowComponent) => {
+                    if (flowComponent.functionality !== "none") {
+                        if (flowComponent.functionality !== "sendDutyCalls") {
                             z.push(
                                 {
                                     functionality: flowComponent.functionality,
@@ -358,15 +384,19 @@ function DragDrop(flowBoard) {
             }
 
         });
-        let flow = {
+        return {
             flow_id: (Math.random() + 1).toString(36).substring(2),
             name: savedListName,
             components: z,
-        }
+        };
+    }
+
+    //Save a flow as a list
+    const saveAsList = () => {
         axios.post("http://localhost:9210/collection/Collectie_Daan", {
                 'type': 'run',
                 'name': 'saveFlowToList',
-                'args': [flow],
+                'args': [reformFlowToList()],
             },
             {
                 headers: {
@@ -400,7 +430,7 @@ function DragDrop(flowBoard) {
             })
             .then(res => {
                 console.log(res.data, "new data");
-                if(res.data === "success"){
+                if (res.data === "success") {
                     return;
                 }
                 calculateBoard(res.data);
@@ -467,19 +497,6 @@ function DragDrop(flowBoard) {
                         })}
                     </div>
                 </div>
-
-                <div className="addComponent">
-                    <div>
-                        <div className="text">Add a Component</div>
-                        <div>Name</div>
-                        <input id="name" name='name' type='text' onChange={event => setFirstName(event.target.value)}
-                               value={firstName}/>
-                        <div>Description</div>
-                        <input id="description" name='description' type='text'
-                               onChange={event => setDescription(event.target.value)} value={componentDescription}/>
-                    </div>
-                    <button className="componentButton" /*onClick={newComponent}*/>Add Component</button>
-                </div>
             </div>
 
             <div className="Board" ref={drop}>
@@ -488,61 +505,21 @@ function DragDrop(flowBoard) {
                         {(provided) => (
                             <div className="blocks" {...provided.droppableProps} ref={provided.innerRef}>
                                 {board.map((picture, index) => {
-                                    if(picture.sort === "beginComponent"){
-                                        return(
-                                        <Draggable key={picture.id} draggableId={picture.id} index={index}>
-                                            {(provided) => (
-                                                <div
-                                                    className="blocks" {...provided.draggableProps} {...provided.dragHandleProps}
-                                                    ref={provided.innerRef}>
-                                                    <Picture url={picture.url} onClick={() => handleOpen(picture.id)}
-                                                             id={picture.id}/>
-                                                    <div className="connect" onClick={() => drawLine(picture.id)}><div className={"outputText"}>O</div></div>
-                                                    <div className="error" >+</div>
-                                                </div>
-
-                                            )}
-                                        </Draggable>
-
-                                        )}
-                                    if(picture.sort === "endComponent"){
-                                        return(
-                                            <Draggable key={picture.id} draggableId={picture.id} index={index}>
-                                                {(provided) => (
-                                                    <div
-                                                        className="blocks" {...provided.draggableProps} {...provided.dragHandleProps}
-                                                        ref={provided.innerRef}>
-                                                        <Picture url={picture.url} onClick={() => handleOpen(picture.id)}
-                                                                 id={picture.id}/>
-                                                        <div className="arrowConnect" onClick={() => drawLine(picture.id)}><div className={"inputText"}>I</div></div>
-                                                        <div className="error" >+</div>
-                                                    </div>
-
-                                                )}
-                                            </Draggable>
-                                        )}
-                                    else {
+                                    if (picture.sort === "beginComponent") {
                                         return (
-                                            <Draggable key={picture.id} draggableId={picture.id} index={index}>
-                                                {(provided) => (
-                                                    <div
-                                                        className="blocks" {...provided.draggableProps} {...provided.dragHandleProps}
-                                                        ref={provided.innerRef}>
-                                                        <Picture url={picture.url}
-                                                                 onClick={() => handleOpen(picture.id)}
-                                                                 id={picture.id}/>
-                                                        <div className="connect" onClick={() => drawLine(picture.id)}>
-                                                            <div className={"outputText"}>O</div>
-                                                        </div>
-                                                        <div className="arrowConnect"
-                                                             onClick={() => drawLine(picture.id)}>
-                                                            <div className={"inputText"}>I</div>
-                                                        </div>
-                                                        <div className="error">+</div>
-                                                    </div>
-
-                                                )}
-                                            </Draggable>
+                                            <BeginComponent drawLine={() => drawLine(picture.id)} picture={picture}
+                                                            handleOpen={() => handleOpen(picture.id)} index={index}/>
+                                        )
+                                    }
+                                    if (picture.sort === "endComponent") {
+                                        return (
+                                            <EndComponent drawLine={() => drawLine(picture.id)} picture={picture}
+                                                          handleOpen={() => handleOpen(picture.id)} index={index}/>
+                                        )
+                                    } else {
+                                        return (
+                                            <MiddleComponent drawLine={() => drawLine(picture.id)} picture={picture}
+                                                             handleOpen={() => handleOpen(picture.id)} index={index}/>
                                         )
                                     }
                                 })}
@@ -563,174 +540,54 @@ function DragDrop(flowBoard) {
                     {(() => {
                         if (modal[0].sort === "beginComponent") {
                             return (
-                                <div>
-                                    <div className={"close"} onClick={handleClose}>x</div>
-                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        {modal[0].name}
-                                    </Typography>
-                                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                        {modal[0].description}
-                                    </Typography>
-                                    <br/>
-                                    <hr/>
-                                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                        <div className={"fileTitle"}>Current file:</div>
-                                        <div className={"fileBox"}>{fileName}</div>
-                                    </Typography>
-
-                                    <br/>
-                                    <label htmlFor="file">Upload a file</label>
-                                    <br/>
-                                    <input type="file" id="file" accept=".json" onChange={handleChange}/>
-                                    <br/>
-                                </div>
+                                <BeginModal onClick={handleClose} onChange={handleChange} modal={modal}
+                                            fileName={fileName}/>
                             )
                         }
                         if (modal[0].name === "Convert") {
                             return (
-                                <div>
-                                    <div className={"close"} onClick={handleClose}>x</div>
-                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        {modal[0].name}
-                                    </Typography>
-                                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                        {modal[0].description}
-                                    </Typography>
-                                    <br/>
-                                    <hr/>
-                                    <h4>From:</h4>
-                                    <select value={middleValue[0]} id="channels" name="channels"
-                                            onChange={event => middleValue.splice(0, 1, event.target.value)}>
-                                        <option>Select an option..</option>
-                                        <option value="JSON">JSON</option>
-                                    </select>
-                                    <h4>To:</h4>
-                                    <select value={middleValue[1]} id="channels" name="channels"
-                                            onChange={event => middleValue.splice(1, 1, event.target.value)}>
-                                        <option>Select an option..</option>
-                                        <option value="DutyCalls">DutyCalls</option>
-                                    </select>
-                                    <button className="componentButton"
-                                            onClick={() => saveValue(modal[0].id, "middleComponent")}>Save
-                                    </button>
-                                </div>
+                                <ConvertModal onClick={handleClose} modal={modal}
+                                              saveValue={() => saveValue(modal[0].id, "middleComponent")}
+                                              middleValue={middleValue}/>
                             )
                         }
                         if (modal[0].name === "Title") {
                             return (
-                                <div>
-                                    <div className={"close"} onClick={handleClose}>x</div>
-                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        {modal[0].name}
-                                    </Typography>
-                                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                        {modal[0].description}
-                                    </Typography>
-                                    <br/>
-                                    <hr/>
-                                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                        current value: <h4>{modal[0].number}</h4>
-                                    </Typography>
-                                    <br/>
-                                    <input id="description" name='description' type='text'
-                                           onChange={event => setMiddleValue(event.target.value)}/>
-                                    <br/>
-                                    <button className="componentButton"
-                                            onClick={() => saveValue(modal[0].id, "middleComponent")}>Save
-                                    </button>
-                                </div>
+                                <TitleModal onClick={handleClose}
+                                            modal={modal}
+                                            onChange={event => setMiddleValue(event.target.value)}
+                                            saveValue={() => saveValue(modal[0].id, "middleComponent")}/>
+
                             )
                         }
                         if (modal[0].name === "Change Title") {
                             return (
-                                <div>
-                                    <div className={"close"} onClick={handleClose}>x</div>
-                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        {modal[0].name}
-                                    </Typography>
-                                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                        {modal[0].description}
-                                    </Typography>
-                                    <br/>
-                                </div>
+                                <ChangeTitleModal modal={modal} handleClose={handleClose}/>
                             )
+
                         }
                         if (modal[0].name === "Mail") {
                             return (
-                                <div>
-                                    <div className={"close"} onClick={handleClose}>x</div>
-                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        {modal[0].name}
-                                    </Typography>
-                                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                        {modal[0].description}
-                                    </Typography>
-                                    <br/>
-                                    <hr/>
-                                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                        current mail: <h4>{modal[0].number}</h4>
-                                    </Typography>
-                                    <br/>
-                                    <input id="description" name='description' type='text'
-                                           onChange={event => setMailValue(event.target.value)}/>
-                                    <br/>
-                                    <button className="componentButton"
-                                            onClick={() => saveValue(modal[0].id, "mailComponent")}>Save
-                                    </button>
-                                </div>
+                                <MailModal modal={modal} handleClose={handleClose}
+                                           setMailValue={event => setMailValue(event.target.value)}
+                                           saveValue={() => saveValue(modal[0].id, "mailComponent")}/>
+
                             )
                         }
                         if (modal[0].name === "DutyCalls") {
                             return (
-                                <div>
-                                    <div className={"close"} onClick={handleClose}>x</div>
-                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        {modal[0].name}
-                                    </Typography>
-                                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                        {modal[0].description}
-                                    </Typography>
-                                    <br/>
-                                    <hr/>
-                                    <h4>Channels:</h4>
-                                    <select value={modalValue} id="channels" name="channels"
-                                            onChange={event => setmodalValue(event.target.value)}>
-                                        <option value="None">Choose an option...</option>
-                                        <option value="privateChannel">Private Channel</option>
-                                        <option value="ThingsFlow">ThingsFlow</option>
-                                    </select>
-                                    <button className="componentButton"
-                                            onClick={() => saveValue(modal[0].id, "dutyCallsComponent")}>Save
-                                    </button>
-                                </div>
+                                <DutyCallsModal modal={modal} handleClose={handleClose}
+                                                setModalValue={event => setModalValue(event.target.value)}
+                                                modalValue={modalValue}
+                                                saveValue={() => saveValue(modal[0].id, "dutyCallsComponent")}/>
                             )
-                        }else {
+                        } else {
                             return (
-                                <div>
-                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        {modal[0].name}
-                                    </Typography>
-                                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                        {modal[0].description}
-                                    </Typography>
-                                    <br/>
-                                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                        current value: <h4>{modal[0].number}</h4>
-                                    </Typography>
-                                    <div>
-                                        <br/>
-                                        <h4>Value:</h4>
-                                        <input className="value" id="description" name='description' type='number'
-                                               onChange={event => setmodalValue(event.target.value)}/>
-                                        <button className="componentButton"
-                                                onClick={() => saveValue(modal[0].id)}>Save
-                                        </button>
-                                    </div>
-                                </div>
+                                <DefaultModal modal={modal} saveValue={() => saveValue(modal[0].id)}
+                                              setModalValue={event => setModalValue(event.target.value)}/>
                             )
                         }
                     })()}
-
                 </Box>
             </Modal>
 
@@ -742,37 +599,14 @@ function DragDrop(flowBoard) {
             >
                 <Box sx={style}>
                     {(() => {
-                        if(modal[0].removable === true){
-                            return(
-                                <div>
-                                    <div className={"close"} onClick={handleCloseSidebar}>x</div>
-                                    <div>
-                                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                                            {modal[0].name}
-                                        </Typography>
-                                        <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                            {modal[0].description}
-                                        </Typography>
-                                        <br/>
-                                        <button onClick={() => deleteComponent(modal[0])} className={"deleteButton"}>Remove</button>
-                                    </div>
-                                </div>
+                        if (modal[0].removable === true) {
+                            return (
+                                <CustomModals onClick={handleCloseSidebar} modal={modal}
+                                              deleteComponent={() => deleteComponent(modal[0])}/>
                             )
-                        }
-                        else{
-                            return(
-                                <div>
-                                    <div className={"close"} onClick={handleCloseSidebar}>x</div>
-                                    <div>
-                                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                                            {modal[0].name}
-                                        </Typography>
-                                        <Typography id="modal-modal-description" sx={{mt: 2}}>
-                                            {modal[0].description}
-                                        </Typography>
-                                        <br/>
-                                    </div>
-                                </div>
+                        } else {
+                            return (
+                                <PremadeModals modal={modal} onClick={handleCloseSidebar}/>
                             )
                         }
                     })()}
@@ -786,26 +620,9 @@ function DragDrop(flowBoard) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <div className={"close"} onClick={handleCloseSaveModal}>x</div>
-                    <div>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                            <h4>Save flow as component</h4>
-                            <hr/>
-                            <h4>Name:</h4>
-                            <input id="description" name='description' type='text'
-                                   onChange={event => setSavedName(event.target.value)}/>
-                            <br/>
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{mt: 2}}>
-                            <br/>
-                            <h4>Description:</h4>
-                            <input id="description" name='description' type='text'
-                                   onChange={event => setSavedDescription(event.target.value)}/>
-                            <br/>
-                        </Typography>
-                        <br/>
-                        <button className="math" onClick={() => saveFlow()}>Save</button>
-                    </div>
+                    <SaveComponentModal onClick={handleCloseSaveModal} saveFlow={() => saveFlow()}
+                                        setSavedDescription={event => setSavedDescription(event.target.value)}
+                                        setSavedName={event => setSavedName(event.target.value)}/>
                 </Box>
             </Modal>
 
@@ -816,19 +633,8 @@ function DragDrop(flowBoard) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <div className={"close"} onClick={handleCloseSaveList}>x</div>
-                    <div>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                            <h4>Save flow as list</h4>
-                            <hr/>
-                            <h4>Name:</h4>
-                            <input id="description" name='description' type='text' maxlength='25'
-                                   onChange={event => setSavedListName(event.target.value)}/>
-                            <br/>
-                        </Typography>
-                        <br/>
-                        <button className="math" onClick={() => saveAsList()}>Save</button>
-                    </div>
+                    <SaveListModal onClick={handleCloseSaveList} saveAsList={() => saveAsList()}
+                                   setSavedListName={event => setSavedListName(event.target.value)}/>
                 </Box>
             </Modal>
 
@@ -845,16 +651,22 @@ function DragDrop(flowBoard) {
             </div>
 
             <div className="submit">
-                <button className="math" onClick={() => calculateBoard(null)}><img className={"buttonImages"} src="./Images/run.png" alt="Italian Trulli"/></button>
+                <button className="math" onClick={() => calculateBoard(null)}><img className={"buttonImages"}
+                                                                                   src="./Images/run.png"
+                                                                                   alt="Italian Trulli"/></button>
             </div>
             <div className="submit">
-                <button className="math saveButton" onClick={() => handleOpenSavemodal()}><img className={"buttonImages"} src="./Images/save.png" alt="Italian Trulli"/></button>
+                <button className="math saveButton" onClick={() => handleOpenSavemodal()}><img
+                    className={"buttonImages"} src="./Images/save.png" alt="Italian Trulli"/></button>
             </div>
             <div className="submit">
-                <button className="math saveToListButton" onClick={() => handleOpenSaveList()}><img className={"buttonImages"} src="./Images/saveToList.png" alt="Italian Trulli"/></button>
+                <button className="math saveToListButton" onClick={() => handleOpenSaveList()}><img
+                    className={"buttonImages"} src="./Images/saveToList.png" alt="Italian Trulli"/></button>
             </div>
             <div className="submit">
-                <button className="math removeButton" onClick={() => emptyBoard()}><img className={"buttonImages"} src="./Images/remove.png" alt="Italian Trulli"/></button>
+                <button className="math removeButton" onClick={() => emptyBoard()}><img className={"buttonImages"}
+                                                                                        src="./Images/remove.png"
+                                                                                        alt="Italian Trulli"/></button>
             </div>
         </div>
 

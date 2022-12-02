@@ -1,8 +1,8 @@
 import {Col, Row} from "react-grid-system";
 
 
-function homePage(){
-    return(
+function homePage() {
+    return (
 
         <>
             <div className={"wholePage"}>
@@ -19,4 +19,5 @@ function homePage(){
         </>
     )
 }
+
 export default homePage

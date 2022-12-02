@@ -1,569 +1,569 @@
-
 /* ---------------------------------- Flow page css ------------------------------------ */
 
 .App {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #89AFE0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #89AFE0;
 }
 
-.addComponent{
-  visibility: hidden;
-  margin-left: 10px;
+.addComponent {
+    visibility: hidden;
+    margin-left: 10px;
 }
 
 
-.componentButton{
-  margin-left: 170px;
-  border-radius: 10px;
-  color: white;
-  box-shadow: 0 4px 2px -2px #455a6e;
-  border-style: none;
-  background-color: #5A7291;
-  width: 150px;
-  height: 40px;
-  padding: 10px;
-  margin-top: 1%;
+.componentButton {
+    margin-left: 170px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 4px 2px -2px #455a6e;
+    border-style: none;
+    background-color: #5A7291;
+    width: 150px;
+    height: 40px;
+    padding: 10px;
+    margin-top: 1%;
 }
 
-.componentButton:hover{
-  border-style: none;
-  background-color: #6982a6;
+.componentButton:hover {
+    border-style: none;
+    background-color: #6982a6;
 }
 
-.componentButton:active{
-  border-style: none;
-  background-color: #41546b;
+.componentButton:active {
+    border-style: none;
+    background-color: #41546b;
 }
 
-.error{
-  font-weight: bold;
-  position: absolute;
-  letter-spacing: 3px;
-  padding-left:40px;
-  padding-right:40px;
-  border-radius: 15px;
-  margin-left: 18px;
-  margin-top: 110px;
-  background-color: #5984BA;
-  color: white;
+.error {
+    font-weight: bold;
+    position: absolute;
+    letter-spacing: 3px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-radius: 15px;
+    margin-left: 18px;
+    margin-top: 110px;
+    background-color: #5984BA;
+    color: white;
 }
 
-.connect{
-  position: absolute;
-  background-color: #6982a6;
-  opacity: 0.50;
-  width: 15px;
-  height: 25px;
-  margin-left: 103px;
-  margin-top: 53px;
-  z-index: 100;
-  border-radius: 10px;
+.connect {
+    position: absolute;
+    background-color: #6982a6;
+    opacity: 0.50;
+    width: 15px;
+    height: 25px;
+    margin-left: 103px;
+    margin-top: 53px;
+    z-index: 100;
+    border-radius: 10px;
 
 }
 
-.arrowConnect{
-  position: absolute;
-  background-color: #6982a6;
-  opacity: 0.50;
-  width: 15px;
-  height: 25px;
-  margin-left: 10px;
-  margin-top: 53px;
-  z-index: 100;
-  border-radius: 10px;
+.arrowConnect {
+    position: absolute;
+    background-color: #6982a6;
+    opacity: 0.50;
+    width: 15px;
+    height: 25px;
+    margin-left: 10px;
+    margin-top: 53px;
+    z-index: 100;
+    border-radius: 10px;
 }
 
-.inputText{
-  opacity: 1;
-  color: white;
-  margin-left: 5px;
+.inputText {
+    opacity: 1;
+    color: white;
+    margin-left: 5px;
 }
 
-.outputText{
-  opacity: 1;
-  color: white;
-  margin-left: 2px;
+.outputText {
+    opacity: 1;
+    color: white;
+    margin-left: 2px;
 }
 
-.connect:hover{
-  background-color: #3e4d5e;
+.connect:hover {
+    background-color: #3e4d5e;
 }
 
-.connect:active{
-  background-color: #41546b;
+.connect:active {
+    background-color: #41546b;
 }
 
-.arrowConnect:hover{
-  background-color: #3e4d5e;
+.arrowConnect:hover {
+    background-color: #3e4d5e;
 }
 
-.arrowConnect:active{
-  background-color: #41546b;
+.arrowConnect:active {
+    background-color: #41546b;
 }
 
-.blocks{
-  display: flex;
+.blocks {
+    display: flex;
 }
 
-.value{
-  width: 60px;
-  height: 30px;
+.value {
+    width: 60px;
+    height: 30px;
 }
 
 .leader-line {
-  z-index: 0;
+    z-index: 0;
 }
 
-.header{
-  background-color: white;
-  box-shadow: 0 4px 2px -2px #5A7291;
-  width: 100%;
-  z-index: 100000;
-  height: 3vw;
+.header {
+    background-color: white;
+    box-shadow: 0 4px 2px -2px #5A7291;
+    width: 100%;
+    z-index: 100000;
+    height: 3vw;
 }
 
 
-.text{
-  font-weight: bold;
-  text-decoration: none;
-  color: black;
+.text {
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
 }
 
-.logo{
-  margin-left: 70px;
-  position: absolute;
-  z-index: 1;
-  width: 7%;
-  height: auto
+.logo {
+    margin-left: 70px;
+    position: absolute;
+    z-index: 1;
+    width: 7%;
+    height: auto
 }
 
 .column {
-  margin-top: 1vh;
-  float: left;
-  width: 46%;
+    margin-top: 1vh;
+    float: left;
+    width: 46%;
 }
 
-.texts{
-  text-align: center;
-  margin-top: 1vh;
-  margin-left: 40vh;
+.texts {
+    text-align: center;
+    margin-top: 1vh;
+    margin-left: 40vh;
 }
 
 .column2 {
-  text-align: center;
-  float: left;
-  padding-left: 80px;
+    text-align: center;
+    float: left;
+    padding-left: 80px;
 }
 
-.sidebar{
-  border: 2px solid #5A7291;
-  background-color: #81A5D5;
-  position: absolute;
-  width: 300px;
-  height: calc(100% - 3vw - 4px);
+.sidebar {
+    border: 2px solid #5A7291;
+    background-color: #81A5D5;
+    position: absolute;
+    width: 300px;
+    height: calc(100% - 3vw - 4px);
 }
 
-.close{
-  color: grey;
-  font-size: 1vw;
-  cursor: pointer;
-  margin-left: 100%;
-  font-weight: bold;
+.close {
+    color: grey;
+    font-size: 1vw;
+    cursor: pointer;
+    margin-left: 100%;
+    font-weight: bold;
 }
 
-.close:hover{
-  color: black;
+.close:hover {
+    color: black;
 }
 
-.sidebarTitle{
-  font-weight: bold;
-  border-radius: 10px;
-  background-color: #3A5985;
-  color: white;
-  padding-left: 10px;
+.sidebarTitle {
+    font-weight: bold;
+    border-radius: 10px;
+    background-color: #3A5985;
+    color: white;
+    padding-left: 10px;
 }
 
 .Pictures {
-  margin: 10px;
+    margin: 10px;
 }
 
-.onBoard{
-  width: 15%;
+.onBoard {
+    width: 15%;
 }
 
-.fileTitle{
-  font-weight: bold;
+.fileTitle {
+    font-weight: bold;
 }
 
-.fileBox{
-  border: 1px solid black;
-  padding: 5px;
-  position: relative;
+.fileBox {
+    border: 1px solid black;
+    padding: 5px;
+    position: relative;
 }
 
-.submit{
-  margin-left: 370px;
-  margin-top: 10px;
-  position: absolute;
+.submit {
+    margin-left: 370px;
+    margin-top: 10px;
+    position: absolute;
 }
 
-.math{
-  margin-top: 10px;
-  border-radius: 10px;
-  box-shadow: 0 4px 2px -2px #455a6e;
-  border-style: none;
-  color: white;
-  background-color: #3A5985;
-  width: 65px;
-  height: 50px;
+.math {
+    margin-top: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 2px -2px #455a6e;
+    border-style: none;
+    color: white;
+    background-color: #3A5985;
+    width: 65px;
+    height: 50px;
 }
 
-.math:hover{
-  cursor: pointer;
-  border-style: none;
-  background-color: #6982a6;
+.math:hover {
+    cursor: pointer;
+    border-style: none;
+    background-color: #6982a6;
 }
 
-.runButton{
-  margin-left: 10px;
+.runButton {
+    margin-left: 10px;
 }
 
-.saveButton{
-  position: absolute;
-  margin-left: 70px;
+.saveButton {
+    position: absolute;
+    margin-left: 70px;
 }
 
-.saveToListButton{
-  position: absolute;
-  margin-left: 140px;
+.saveToListButton {
+    position: absolute;
+    margin-left: 140px;
 }
 
-.removeButton{
-  position: absolute;
-  margin-left: 210px;
+.removeButton {
+    position: absolute;
+    margin-left: 210px;
 }
 
-.buttonImages{
-  margin-top: 5px;
-  width: 50px;
-  height: auto;
+.buttonImages {
+    margin-top: 5px;
+    width: 50px;
+    height: auto;
 }
 
-.deleteButton{
-  border-radius: 10px;
-  box-shadow: 0 4px 2px -2px #455a6e;
-  border-style: none;
-  color: white;
-  background-color: red;
-  opacity: 0.48;
-  width: 75px;
-  height: 40px;
-  margin-left: 300px;
+.deleteButton {
+    border-radius: 10px;
+    box-shadow: 0 4px 2px -2px #455a6e;
+    border-style: none;
+    color: white;
+    background-color: red;
+    opacity: 0.48;
+    width: 75px;
+    height: 40px;
+    margin-left: 300px;
 }
 
-.deleteButton:hover{
+.deleteButton:hover {
 
-  cursor: pointer;
-  border-style: none;
-  opacity: 0.55;
-}
-.Title{
-  font-weight: bold;
-  font-size: 25px;
+    cursor: pointer;
+    border-style: none;
+    opacity: 0.55;
 }
 
-
-
-.invisible{
-  visibility: hidden;
-}
-
-.math:active{
-  border-style: none;
-  background-color: #41546b;
-}
-
-.save{
-  border-radius: 10px;
-  box-shadow: 0 4px 2px -2px #455a6e;
-  border-style: none;
-  color: white;
-  background-color: #3A5985;
-  width: 75px;
-  height: 40px;
-}
-
-.answerText{
-  margin-top: 5px;
-  background-color: #D6E3F4;
-  border-radius: 2px;
-  box-shadow: 0 4px 2px -2px #455a6e;
+.Title {
+    font-weight: bold;
+    font-size: 25px;
 }
 
 
-.sidebar img{
-  box-shadow: 0 4px 2px -2px #455a6e;
-  margin: 15px;
-  border-radius: 10px;
+.invisible {
+    visibility: hidden;
 }
 
-.Board img{
-  box-shadow: 0 4px 2px -2px #455a6e;
-  z-index: 10;
-  margin: 15px;
-  border-radius: 10px;
+.math:active {
+    border-style: none;
+    background-color: #41546b;
+}
+
+.save {
+    border-radius: 10px;
+    box-shadow: 0 4px 2px -2px #455a6e;
+    border-style: none;
+    color: white;
+    background-color: #3A5985;
+    width: 75px;
+    height: 40px;
+}
+
+.answerText {
+    margin-top: 5px;
+    background-color: #D6E3F4;
+    border-radius: 2px;
+    box-shadow: 0 4px 2px -2px #455a6e;
+}
+
+
+.sidebar img {
+    box-shadow: 0 4px 2px -2px #455a6e;
+    margin: 15px;
+    border-radius: 10px;
+}
+
+.Board img {
+    box-shadow: 0 4px 2px -2px #455a6e;
+    z-index: 10;
+    margin: 15px;
+    border-radius: 10px;
 }
 
 .Board {
-  background-color: #D6E3F4;
-  box-shadow: 0 4px 3px 0px #5A7291;
-  padding: 40px;
-  position: absolute;
-  margin-top: 90px;
-  margin-left: 470px;
-  width: 1300px;
-  height: 600px;
-  border-radius: 10px;
+    background-color: #D6E3F4;
+    box-shadow: 0 4px 3px 0px #5A7291;
+    padding: 40px;
+    position: absolute;
+    margin-top: 90px;
+    margin-left: 470px;
+    width: 1300px;
+    height: 600px;
+    border-radius: 10px;
 }
 
 
-.dragDrop{
-  background-image: url("Frame 2.png");
-  background-size: cover;
-  z-index: 10;
-  height: 94%;
+.dragDrop {
+    background-image: url("Frame 2.png");
+    background-size: cover;
+    z-index: 10;
+    height: 94%;
 }
 
 /* ---------------------------------- Home page css ------------------------------------ */
 
-.wholePage{
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  height: 94%;
-  background-image: url("Untitled.png");
-  background-size: cover;
+.wholePage {
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 94%;
+    background-image: url("Untitled.png");
+    background-size: cover;
 }
 
-.homeButton{
-  font-size: 15px;
-  letter-spacing: 2px;
-  position: absolute;
-  text-decoration: none;
-  margin-top: 400px;
-  margin-left: 580px;
-  color: white;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #3A5985;
-  border: none;
+.homeButton {
+    font-size: 15px;
+    letter-spacing: 2px;
+    position: absolute;
+    text-decoration: none;
+    margin-top: 400px;
+    margin-left: 580px;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #3A5985;
+    border: none;
 }
 
-.thingsFlow{
-  margin-left: 260px;
-  margin-top: 100px;
-  position: absolute;
+.thingsFlow {
+    margin-left: 260px;
+    margin-top: 100px;
+    position: absolute;
 }
 
 /* ---------------------------------- Documentation page css ------------------------------------ */
 
-.documentation{
-  background-image: url("Untitled.png");
-  background-attachment: fixed;
+.documentation {
+    background-image: url("Untitled.png");
+    background-attachment: fixed;
 
 }
 
-.documentationCard{
-  display: inline-block;
-  box-shadow: 1px 7px 15px #5A7291;
-  border-radius: 10px;
-  z-index: -5;
-  margin: 30px 10px 25px 50px;
-  padding-top: 20px;
-  padding-right: 40px;
-  padding-bottom: 40px;
-  width: 36%;
-  background-color: whitesmoke;
+.documentationCard {
+    display: inline-block;
+    box-shadow: 1px 7px 15px #5A7291;
+    border-radius: 10px;
+    z-index: -5;
+    margin: 30px 10px 25px 50px;
+    padding-top: 20px;
+    padding-right: 40px;
+    padding-bottom: 40px;
+    width: 36%;
+    background-color: whitesmoke;
 
 }
 
-.listBackground{
-  box-shadow: 1px 1px 6px;
-  background-color: rgba(255,255,255, 0.75);
-  border-radius: 10px;
-  padding-top: 20px;
-  padding-bottom: 70px;
-  width: 60%;
-  margin-left: 380px;
+.listBackground {
+    box-shadow: 1px 1px 6px;
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 10px;
+    padding-top: 20px;
+    padding-bottom: 70px;
+    width: 60%;
+    margin-top: 146px;
+    margin-left: 375px;
 }
 
-.allCards{
-  margin-left: 40px;
+.allCards {
+    margin-left: 40px;
 }
 
-.docTitle{
-  font-size: 30px;
-  text-shadow: #81A5D5 2px 1px;
-  font-weight: bold;
-  letter-spacing: 2px;
+.docTitle {
+    font-size: 30px;
+    text-shadow: #81A5D5 2px 1px;
+    font-weight: bold;
+    letter-spacing: 2px;
 }
 
-.docDescription{
-  font-size: 16px;
-  height: max-content;
+.docDescription {
+    font-size: 16px;
+    height: max-content;
 }
 
-.docText{
-  margin-top: 10px;
-  font-family: Keraleeyam, serif;
-  margin-left: 140px;
+.docText {
+    margin-top: 10px;
+    font-family: Keraleeyam, serif;
+    margin-left: 140px;
 }
 
-.docImg{
-  border-radius: 10px;
-  margin-left: 20px;
-  float: left;
+.docImg {
+    border-radius: 10px;
+    margin-left: 20px;
+    float: left;
 }
 
 /* ---------------------------------- Flows page css ------------------------------------ */
 
-.flowList{
-  box-shadow: 1px 1px 6px;
-  margin-top: 205px;
-  margin-left: 270px;
-  width: 1400px;
-  height: 700px;
-  background-color: white
+.flowList {
+    box-shadow: 1px 1px 6px;
+    margin-top: 205px;
+    margin-left: 270px;
+    width: 1400px;
+    height: 700px;
+    background-color: white
 }
 
-.flow{
-  width: 100%;
-  height: 80px;
-  box-shadow: 0 4px 2px -2px #5A7291;
+.flow {
+    width: 100%;
+    height: 80px;
+    box-shadow: 0 4px 2px -2px #5A7291;
 }
 
 ul {
-  list-style-type: none;
-  height: 70px;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+    list-style-type: none;
+    height: 70px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
 li {
-  float: left;
-  height: 40px;
-  padding-top: 30px;
-  padding-left: 122px;
-  padding-right: 95px;
+    float: left;
+    height: 40px;
+    padding-top: 30px;
+    padding-left: 122px;
+    padding-right: 95px;
 }
 
-.flowListButton{
-  font-size: 15px;
-  letter-spacing: 2px;
-  text-decoration: none;
-  color: white;
-  padding: 10px;
-  border-radius: 10px;
-  background-color: #3A5985;
-  border: none;
+.flowListButton {
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #3A5985;
+    border: none;
 }
 
-.removeFlow{
-  color: red;
-  opacity: 0.48;
-  font-weight: bold;
-  position: absolute;
-  font-size: 20px;
-  margin-left: 1360px;
-  margin-top: 26px;
+.removeFlow {
+    color: red;
+    opacity: 0.48;
+    font-weight: bold;
+    position: absolute;
+    font-size: 20px;
+    margin-left: 1360px;
+    margin-top: 26px;
 }
 
-.removeFlow:hover{
-  cursor: pointer;
-  opacity: 0.77;
+.removeFlow:hover {
+    cursor: pointer;
+    opacity: 0.77;
 }
 
-.flowListButton:hover{
-  cursor: pointer;
+.flowListButton:hover {
+    cursor: pointer;
 }
 
-.flowTitle{
-  position: absolute;
-  font-weight: bold;
-  font-size: 15px;
+.flowTitle {
+    position: absolute;
+    font-weight: bold;
+    font-size: 15px;
 }
 
-.flowErrors{
-  margin-left: 262px;
+.flowErrors {
+    margin-left: 262px;
 }
 
-.flowNaming{
-  font-weight: bold;
-  position: absolute;
-  margin-top: 145px;
-  margin-left: 250px;
+.flowNaming {
+    font-weight: bold;
+    position: absolute;
+    margin-top: 145px;
+    margin-left: 250px;
 }
 
-.flowFavorite{
-  margin-left: 118px;
+.flowFavorite {
+    margin-left: 334px;
 }
 
 .search {
-  position: absolute;
-  display: flex;
-  width: 1100px;
-  margin-left: 400px;
-  margin-top: 100px;
+    position: absolute;
+    display: flex;
+    width: 1100px;
+    margin-left: 400px;
+    margin-top: 100px;
 }
 
 .searchTerm {
-  width: 100%;
-  border: 3px solid #3A5985;
-  border-right: none;
-  padding: 5px;
-  height: 20px;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-  color: #3A5985;
+    width: 100%;
+    border: 3px solid #3A5985;
+    border-right: none;
+    padding: 5px;
+    height: 20px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #3A5985;
 }
 
-.searchTerm:focus{
-  color: #3A5985;
+.searchTerm:focus {
+    color: #3A5985;
 }
 
 .searchButton {
-  width: 40px;
-  height: 36px;
-  border: 1px solid #3A5985;
-  background: #3A5985;
-  text-align: center;
-  color: #fff;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  font-size: 20px;
+    width: 40px;
+    height: 36px;
+    border: 1px solid #3A5985;
+    background: #3A5985;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 20px;
 }
 
-.filterButton{
-  margin-left: 3px;
-  width: 70px;
-  height: 34px;
-  border: 1px solid #3A5985;
-  background: #3A5985;
-  text-align: center;
-  color: #fff;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 20px;
+.filterButton {
+    margin-left: 3px;
+    width: 70px;
+    height: 34px;
+    border: 1px solid #3A5985;
+    background: #3A5985;
+    text-align: center;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
 }
 
 /*Resize the wrap to see the search bar change!*/
-.wrap{
-  width: 30%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.wrap {
+    width: 30%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
