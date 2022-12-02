@@ -23,6 +23,7 @@ function Documentation(){
                 }
             })
             .then(res => {
+                console.log(res.data);
                 setSidebar(res.data);
             })
     }
@@ -45,6 +46,7 @@ function Documentation(){
               </div>
               <br/><br/><br/><br/><br/><br/><br/><br/><br/>
               <div className={"listBackground"}>
+                  <div className={"allCards"}>
                   {getSidebarList()}
                       {sidebar.map((picture) => {
                           return (
@@ -52,8 +54,8 @@ function Documentation(){
                                     <img
                                         className={"docImg"}
                                         src={picture.url}
-                                        width="150px"
-                                        height="150px"
+                                        width="100px"
+                                        height="100px"
                                         role="button"
                                         tabIndex="0"
                                     />
@@ -64,6 +66,7 @@ function Documentation(){
                                 </div>
                           )
                       })}
+                  </div>
               </div>
           </div>
         </>

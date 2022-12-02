@@ -210,19 +210,71 @@
 }
 
 .math{
+  margin-top: 10px;
   border-radius: 10px;
   box-shadow: 0 4px 2px -2px #455a6e;
   border-style: none;
   color: white;
   background-color: #3A5985;
-  width: 75px;
-  height: 40px;
+  width: 65px;
+  height: 50px;
 }
 
 .math:hover{
+  cursor: pointer;
   border-style: none;
   background-color: #6982a6;
 }
+
+.runButton{
+  margin-left: 10px;
+}
+
+.saveButton{
+  position: absolute;
+  margin-left: 70px;
+}
+
+.saveToListButton{
+  position: absolute;
+  margin-left: 140px;
+}
+
+.removeButton{
+  position: absolute;
+  margin-left: 210px;
+}
+
+.buttonImages{
+  margin-top: 5px;
+  width: 50px;
+  height: auto;
+}
+
+.deleteButton{
+  border-radius: 10px;
+  box-shadow: 0 4px 2px -2px #455a6e;
+  border-style: none;
+  color: white;
+  background-color: red;
+  opacity: 0.48;
+  width: 75px;
+  height: 40px;
+  margin-left: 300px;
+}
+
+.deleteButton:hover{
+
+  cursor: pointer;
+  border-style: none;
+  opacity: 0.55;
+}
+.Title{
+  font-weight: bold;
+  font-size: 25px;
+}
+
+
 
 .invisible{
   visibility: hidden;
@@ -324,53 +376,61 @@
 }
 
 .documentationCard{
-  box-shadow: 1px 1px 9px;
+  display: inline-block;
+  box-shadow: 1px 7px 15px #5A7291;
+  border-radius: 10px;
   z-index: -5;
-  margin-left: 217px;
-  margin-top: 40px;
-  margin-bottom: 40px;
-  padding-top: 40px;
-  width: 70%;
+  margin: 30px 10px 25px 50px;
+  padding-top: 20px;
+  padding-right: 40px;
+  padding-bottom: 40px;
+  width: 36%;
   background-color: whitesmoke;
 
 }
 
 .listBackground{
+  box-shadow: 1px 1px 6px;
   background-color: rgba(255,255,255, 0.75);
   border-radius: 10px;
   padding-top: 20px;
-  padding-bottom: 20px;
-  width: 80%;
-  margin-left: 200px;
+  padding-bottom: 70px;
+  width: 60%;
+  margin-left: 380px;
+}
+
+.allCards{
+  margin-left: 40px;
 }
 
 .docTitle{
-  font-size: 50px;
+  font-size: 30px;
   text-shadow: #81A5D5 2px 1px;
   font-weight: bold;
   letter-spacing: 2px;
 }
 
 .docDescription{
-  font-size: 25px;
+  font-size: 16px;
+  height: max-content;
 }
 
 .docText{
   margin-top: 10px;
   font-family: Keraleeyam, serif;
-  margin-left: 280px;
-  padding-bottom: 120px;
+  margin-left: 140px;
 }
 
 .docImg{
   border-radius: 10px;
-  margin-left: 40px;
+  margin-left: 20px;
   float: left;
 }
 
 /* ---------------------------------- Flows page css ------------------------------------ */
 
 .flowList{
+  box-shadow: 1px 1px 6px;
   margin-top: 205px;
   margin-left: 270px;
   width: 1400px;
@@ -386,6 +446,7 @@
 
 ul {
   list-style-type: none;
+  height: 70px;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -393,7 +454,7 @@ ul {
 
 li {
   float: left;
-  height: 150px;
+  height: 40px;
   padding-top: 30px;
   padding-left: 122px;
   padding-right: 95px;
@@ -410,9 +471,33 @@ li {
   border: none;
 }
 
+.removeFlow{
+  color: red;
+  opacity: 0.48;
+  font-weight: bold;
+  position: absolute;
+  font-size: 20px;
+  margin-left: 1360px;
+  margin-top: 26px;
+}
+
+.removeFlow:hover{
+  cursor: pointer;
+  opacity: 0.77;
+}
+
+.flowListButton:hover{
+  cursor: pointer;
+}
+
 .flowTitle{
+  position: absolute;
   font-weight: bold;
   font-size: 15px;
+}
+
+.flowErrors{
+  margin-left: 262px;
 }
 
 .flowNaming{
