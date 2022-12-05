@@ -9,6 +9,7 @@ function PremadeModals({onClick, modal}) {
             <div className={"sidebarModalImage"}>
                 <img
                     className={"imgSidebar"}
+                    alt="modal"
                     src={modal[0].url}
                     width="100px"
                     height="100px"

@@ -1,9 +1,8 @@
 import axios from "axios";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import DeleteModal from "./Modals/FlowModals/DeleteModal";
 import FlowListComponent from "./Flows/FlowListComponent";
 
@@ -32,6 +31,11 @@ function Flows() {
     }
     const handleCloseSaveModal = () => setOpenSaveModal(false);
 
+    //Puts the components in the flow list
+    useEffect(() => {
+        getSavedflows();
+    },[])
+
     //token needed to authorize and run the API calls
     const token = `xUN1z8f3YQ6flB0ZYOWHoc`;
 
@@ -48,7 +52,6 @@ function Flows() {
                 }
             })
             .then(res => {
-                console.log(res.data, "lol");
                 setSavedFlows(res.data);
             })
     }
@@ -99,7 +102,6 @@ function Flows() {
                     </ul>
                 </div>
 
-                {getSavedflows()}
                 <div className={"flowList"}>
                     {savedFlows.map((flow, index) => {
                         return (

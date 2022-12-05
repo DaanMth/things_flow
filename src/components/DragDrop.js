@@ -6,7 +6,6 @@ import {useDrop} from 'react-dnd';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import Xarrow, {Xwrapper} from "react-xarrows"
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
@@ -24,7 +23,6 @@ import SaveListModal from "./Modals/buttonModals/SaveListModal";
 import BeginComponent from "./boardComponents/BeginComponent";
 import EndComponent from "./boardComponents/EndComponent";
 import MiddleComponent from "./boardComponents/MiddleComponent";
-
 
 const style = {
     position: 'absolute',
@@ -57,6 +55,7 @@ function DragDrop(flowBoard) {
     const [savedName, setSavedName] = useState("");
     const [savedDescription, setSavedDescription] = useState("");
     const [visibilityAlert, setVisibilityAlert] = React.useState(false);
+    const [visibilityErrorAlert, setVisibilityErrorAlert] = React.useState(false);
     const location = useLocation();
 
     //Open and closes the modals of the components in the board
@@ -87,7 +86,6 @@ function DragDrop(flowBoard) {
     }
     const handleCloseSaveList = () => setOpenSaveList(false);
 
-
     //Save the value of the component that is given in the modal
     const saveValue = (id, component) => {
         const boardBlock = board.filter((picture) => id === picture.id);
@@ -100,7 +98,7 @@ function DragDrop(flowBoard) {
         if (component === "mailComponent") {
             boardBlock[0].number = mailValue;
         }
-        console.log(boardBlock[0]);
+        console.log(boardBlock[0],);
     }
 
     //Adds an image to the board when a component is swiped inside of it
@@ -112,41 +110,56 @@ function DragDrop(flowBoard) {
         })
     }));
 
+    //Remove all the items that are currently on the board
+    const emptyBoard = () => {
+        setBoard([]);
+        setArrow([]);
+    }
+
+    //Makes a list of the sidebar components so that it can immediately be added to the board instead of needing a compile first
+    let sidebarList;
+
+    //Adds an image to the board when a component is swiped inside of it
+    const addImageToBoard = (id) => {
+        let sidebarAdd = sidebarList.filter((picture) => id === picture.id);
+        sidebarAdd[0].id = (Math.random() + 1).toString(36).substring(2);
+        console.log(sidebarAdd[0]);
+        setBoard((board) => [...board, sidebarAdd[0]]);
+    };
+
     //Fills the board with the given components from the Flows page
     const generateBoard = (flows) => {
         if (location.state !== null) {
             flows.map((flow) => {
-                console.log(flow,)
-                let sidebarAdd = sidebar.filter((picture) => flow.functionality === picture.functionality);
+                let sidebarAdd = sidebarList.filter((picture) => flow.functionality === picture.functionality);
                 sidebarAdd[0].id = (Math.random() + 1).toString(36).substring(2);
                 sidebarAdd[0].number = flow.number;
                 setBoard((board) => [...board, sidebarAdd[0]]);
-                location.state = null;
             })
+            location.state = null;
+            getSidebarList()
         }
     }
-
-    //Remove all the items that are currently on the board
-    const emptyBoard = () => {
-        setBoard([]);
-    }
-
-    //Adds an image to the board when a component is swiped inside of it
-    const addImageToBoard = (id) => {
-        let sidebarAdd = sidebar.filter((picture) => id === picture.id);
-        sidebarAdd[0].id = (Math.random() + 1).toString(36).substring(2);
-        console.log(sidebarAdd[0],);
-        setBoard((board) => [...board, sidebarAdd[0]]);
-    };
 
     //Gives a success alert when a flow ran successfully
     const alerting = (bool) => {
         setVisibilityAlert(bool);
         if (bool === true) {
-            document.getElementById("sidebar").style.height = 'calc(100% - 5vw - 16px)';
+            document.getElementById("sidebar").style.height = 'calc(100% - 5vw - 12px)';
         }
         if (bool === false) {
-            document.getElementById("sidebar").style.height = 'calc(100% - 3vw - 4px)';
+            document.getElementById("sidebar").style.height = 'calc(100% - 3vw)';
+        }
+    };
+
+    //Gives a success alert when a flow ran successfully
+    const alertingError = (bool) => {
+        setVisibilityErrorAlert(bool)
+        if (bool === true) {
+            document.getElementById("sidebar").style.height = 'calc(100% - 5vw - 12px)';
+        }
+        if (bool === false) {
+            document.getElementById("sidebar").style.height = 'calc(100% - 3vw)';
         }
     };
 
@@ -178,7 +191,7 @@ function DragDrop(flowBoard) {
             x.push(secondBlock.functionality[0]);
             secondBlock.functionality.splice(0, 1);
             flowSwitch = true;
-            console.log(x)
+            console.log(x,)
             runFlow(x);
         }
     }
@@ -187,6 +200,7 @@ function DragDrop(flowBoard) {
     const secondCalculation = (x, secondBlock) => {
         x = [y.find(b => b.id === z[0].firstBlock).number];
         x.push(secondBlock);
+        console.log(x);
         z.splice(0, 1);
         runFlow(x);
     }
@@ -197,15 +211,32 @@ function DragDrop(flowBoard) {
         x = [parsedAnswer];
         x.push(secondBlock);
         z.splice(0, 1);
+        console.log(x);
         runFlow(x);
         alerting(true);
     }
 
+    //Calculates the part of the flow when it has gone through every other if statement
+    const fourthCalculation = (x, secondBlock, calculatedAnswer) => {
+        if (z.length === 0) {
+            setAnswer((calculatedAnswer).data);
+            console.log(answer,);
+            return;
+        }
+        x = [(calculatedAnswer)];
+        x.push(secondBlock)
+        console.log(x);
+        z.splice(0, 1);
+        runFlow(x);
+    }
+
     //Runs the functions inside the board
     const calculateBoard = (calculatedAnswer) => {
-        console.log(board);
         let x;
-        console.log(calculatedAnswer);
+        if (y.length < 3 || y[2].sort !== "endComponent") {
+            alertingError(true);
+            return;
+        }
         let secondBlock = y.find(b => b.id === z[0].secondBlock)
         console.log(secondBlock, calculatedAnswer);
         if (secondBlock.functionality !== "mail") {
@@ -217,15 +248,7 @@ function DragDrop(flowBoard) {
         if (calculatedAnswer[1] === "object") {
             thirdCalculation(x, secondBlock, calculatedAnswer);
         } else {
-            if (z.length === 0) {
-                setAnswer((calculatedAnswer).data);
-                console.log(answer,);
-                return;
-            }
-            x = [(calculatedAnswer)];
-            x.push(secondBlock);
-            z.splice(0, 1);
-            runFlow(x);
+            fourthCalculation(x, secondBlock, calculatedAnswer)
         }
     };
 
@@ -259,7 +282,7 @@ function DragDrop(flowBoard) {
     const arrowList = (firstBlock, secondBlock) => {
         setArrow((arrow) => [...arrow, {firstBlock, secondBlock}]);
         setBlock([]);
-        console.log(arrows,);
+        console.log(arrows);
     }
 
     //Adds an arrow to the page
@@ -268,6 +291,11 @@ function DragDrop(flowBoard) {
             arrowList(block[0], block[1]);
         }
     }, [block])
+
+    //Puts the components in the side bar
+    useEffect(() => {
+        getSidebarList();
+    }, [])
 
     //Adds an arrow to the page
     const drawLine = (id) => {
@@ -329,14 +357,13 @@ function DragDrop(flowBoard) {
                 console.log(err);
             })
             .then(res => {
-                console.log(res.data);
+                console.log(res.data,);
                 handleCloseSidebar()
             })
     }
 
     //API call to get the components inside the sidebar
     const getSidebarList = () => {
-        console.log(flowBoard)
         axios.post("http://localhost:9210/collection/Collectie_Daan", {
                 'type': 'run',
                 'name': 'getSidebarList'
@@ -349,9 +376,9 @@ function DragDrop(flowBoard) {
             })
             .then(res => {
                 setSidebar(res.data);
+                sidebarList = res.data;
                 generateBoard(location.state);
             })
-
     }
 
     //Changes the board component to a list so it can be added to the list page
@@ -455,8 +482,16 @@ function DragDrop(flowBoard) {
                 </Collapse>
             </Box>
 
+            <Box sx={{width: '100%'}}>
+                <Collapse in={visibilityErrorAlert}>
+                    <Alert severity="error" onClose={() => alertingError(false)} sx={{height: '2vw'}}>
+                        <div className={"errorAlert"}>You need a begin, middle and end component for the flow to work!
+                        </div>
+                    </Alert>
+                </Collapse>
+            </Box>
+
             <div className="sidebar" id="sidebar">
-                {getSidebarList()}
                 <div className="Pictures">
                     <div>
                         <div className={"sidebarTitle"}>Start Component</div>

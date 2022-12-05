@@ -49,6 +49,10 @@
     color: white;
 }
 
+.errorAlert{
+    color: red;
+}
+
 .connect {
     position: absolute;
     background-color: #6982a6;
