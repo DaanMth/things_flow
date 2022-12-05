@@ -117,7 +117,7 @@
 
 .header {
     background-color: white;
-    box-shadow: 0 4px 2px -2px #5A7291;
+    box-shadow: 1px 7px 15px #5A7291;
     width: 100%;
     z-index: 100000;
     height: 3vw;
@@ -157,18 +157,19 @@
 }
 
 .sidebar {
-    border: 2px solid #5A7291;
+    box-shadow: 1px 7px 15px #5A7291;
     background-color: #81A5D5;
     position: absolute;
     width: 300px;
-    height: calc(100% - 3vw - 4px);
+    height: calc(100% - 3vw);
 }
 
 .close {
+    position: absolute;
     color: grey;
     font-size: 1vw;
     cursor: pointer;
-    margin-left: 100%;
+    margin-left: 87%;
     font-weight: bold;
 }
 
@@ -203,8 +204,8 @@
 }
 
 .submit {
-    margin-left: 370px;
-    margin-top: 10px;
+    margin-left: 390px;
+    margin-top: 20px;
     position: absolute;
 }
 
@@ -215,8 +216,8 @@
     border-style: none;
     color: white;
     background-color: #3A5985;
-    width: 65px;
-    height: 50px;
+    width: 55px;
+    height: 35px;
 }
 
 .math:hover {
@@ -231,22 +232,22 @@
 
 .saveButton {
     position: absolute;
-    margin-left: 70px;
+    margin-left: 60px;
 }
 
 .saveToListButton {
     position: absolute;
-    margin-left: 140px;
+    margin-left: 120px;
 }
 
 .removeButton {
     position: absolute;
-    margin-left: 210px;
+    margin-left: 180px;
 }
 
 .buttonImages {
-    margin-top: 5px;
-    width: 50px;
+    margin-top: 3px;
+    width: 40px;
     height: auto;
 }
 
@@ -308,6 +309,24 @@
     border-radius: 10px;
 }
 
+.sidebarModalImage{
+    box-shadow: 1px 7px 15px #5A7291;
+    border-radius: 10px;
+    position: absolute;
+}
+
+.imgSidebar{
+    border-radius: 10px;
+}
+
+.sidebarModalTitle{
+    text-shadow: #81A5D5 1px 1px;
+}
+
+.sidebarModalText{
+    margin-left: 120px;
+}
+
 .Board img {
     box-shadow: 0 4px 2px -2px #455a6e;
     z-index: 10;
@@ -321,9 +340,9 @@
     padding: 40px;
     position: absolute;
     margin-top: 90px;
-    margin-left: 470px;
+    margin-left: 440px;
     width: 1300px;
-    height: 600px;
+    height: 650px;
     border-radius: 10px;
 }
 
@@ -478,7 +497,7 @@ li {
     position: absolute;
     font-size: 20px;
     margin-left: 1360px;
-    margin-top: 26px;
+    margin-top: 25px;
 }
 
 .removeFlow:hover {

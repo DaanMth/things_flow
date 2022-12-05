@@ -46,10 +46,8 @@ function DragDrop(flowBoard) {
     const [modalValue, setModalValue] = useState([]);
     const [middleValue, setMiddleValue] = useState([]);
     const [fileName, setFileName] = useState([]);
-    const [componentDescription, setDescription] = useState([]);
     const [mailValue, setMailValue] = useState([]);
     const [savedListName, setSavedListName] = useState([]);
-    const [firstName, setFirstName] = useState('');
     const [modal, setModal] = useState([{name: 'null', description: 'null'}]);
     const [answer, setAnswer] = useState(0);
     const [open, setOpen] = React.useState(false);
