@@ -3,7 +3,7 @@ import Picture from './Picture';
 import BeginModal from '../components/Modals/boardModals/BeginModal';
 import axios from "axios";
 import {useDrop} from 'react-dnd';
-import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
+import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import Xarrow, {Xwrapper} from "react-xarrows"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -36,7 +36,7 @@ const style = {
     p: 4,
 };
 
-function DragDrop(flowBoard) {
+function DragDrop() {
     const [board, setBoard] = useState([]);
     const [block, setBlock] = useState([]);
     const [arrows, setArrow] = useState([]);
@@ -106,7 +106,7 @@ function DragDrop(flowBoard) {
         accept: "image",
         drop: (item) => addImageToBoard(item.id),
         collect: (monitor) => ({
-            isOver: !!monitor.isOver(),
+            isOver: !!monitor.isOver()
         })
     }));
 
@@ -131,7 +131,7 @@ function DragDrop(flowBoard) {
     //Fills the board with the given components from the Flows page
     const generateBoard = (flows) => {
         if (location.state !== null) {
-            flows.map((flow) => {
+            flows.forEach((flow) => {
                 let sidebarAdd = sidebarList.filter((picture) => flow.functionality === picture.functionality);
                 sidebarAdd[0].id = (Math.random() + 1).toString(36).substring(2);
                 sidebarAdd[0].number = flow.number;
@@ -234,7 +234,8 @@ function DragDrop(flowBoard) {
     //Runs the functions inside the board
     const calculateBoard = (calculatedAnswer) => {
         let x;
-        if (y.length < 3 || y[2].sort !== "endComponent") {
+        console.log(y);
+        if (y.length < 3 || y[2].sort === "endComponent") {
             alertingError(true);
             return;
         }
@@ -386,7 +387,7 @@ function DragDrop(flowBoard) {
     const reformFlowToList = () => {
         let y = structuredClone(board);
         let z = [];
-        y.map((component) => {
+        y.forEach((component) => {
             if (component.number !== undefined) {
                 z.push(
                     {
@@ -395,7 +396,7 @@ function DragDrop(flowBoard) {
                     }
                 )
             } else {
-                component.functionality.map((flowComponent) => {
+                component.functionality.forEach((flowComponent) => {
                     if (flowComponent.functionality !== "none") {
                         if (flowComponent.functionality !== "sendDutyCalls") {
                             z.push(
@@ -478,7 +479,6 @@ function DragDrop(flowBoard) {
             <Box sx={{width: '100%'}}>
                 <Collapse in={visibilityAlert}>
                     <Alert severity="success" onClose={() => alerting(false)} sx={{height: '2vw'}}>
-                        //h ///////////////////////////////////////
                         <div className={"successAlert"}>The flow ran successfully!!</div>
                     </Alert>
                 </Collapse>
