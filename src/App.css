@@ -49,8 +49,12 @@
     color: white;
 }
 
-.errorAlert{
+.errorAlert {
     color: red;
+}
+
+.successAlert{
+    color: green;
 }
 
 .connect {
@@ -162,7 +166,7 @@
 
 .sidebar {
     box-shadow: 1px 7px 15px #5A7291;
-    background-color: #81A5D5;
+    background-color: #618FCA;
     position: absolute;
     width: 300px;
     height: calc(100% - 3vw);
@@ -182,11 +186,22 @@
 }
 
 .sidebarTitle {
+    width: 87%;
+    position: absolute;
     font-weight: bold;
     border-radius: 10px;
     background-color: #3A5985;
+    padding-right: 10px;
     color: white;
     padding-left: 10px;
+}
+
+.sidebarBackground{
+    background-color: #81A5D5;
+    padding-top: 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+
 }
 
 .Pictures {
@@ -260,11 +275,10 @@
     box-shadow: 0 4px 2px -2px #455a6e;
     border-style: none;
     color: white;
-    background-color: red;
-    opacity: 0.48;
+    background-color: #FF8585;
     width: 75px;
     height: 40px;
-    margin-left: 300px;
+    margin-left: 330px;
 }
 
 .deleteButton:hover {
@@ -272,6 +286,43 @@
     cursor: pointer;
     border-style: none;
     opacity: 0.55;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: dimgrey;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 130%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltiptext::after{
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent dimgrey transparent;
+}
+
+.math:hover .tooltiptext {
+    visibility: visible;
+}
+
+.deleteModal{
+    background-image: url("DarkerHedgehog.png");
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: 500px 200px;
 }
 
 .Title {
@@ -299,6 +350,11 @@
     height: 40px;
 }
 
+.saveModalTitle{
+    font-size: 25px;
+    text-shadow: #81A5D5 0px 1px;
+}
+
 .answerText {
     margin-top: 5px;
     background-color: #D6E3F4;
@@ -313,21 +369,26 @@
     border-radius: 10px;
 }
 
-.sidebarModalImage{
+.sidebarModalImage {
     box-shadow: 1px 7px 15px #5A7291;
     border-radius: 10px;
     position: absolute;
 }
 
-.imgSidebar{
+.imgSidebar {
     border-radius: 10px;
 }
 
-.sidebarModalTitle{
+.sidebarModalTitle {
+    font-size: 30px;
     text-shadow: #81A5D5 1px 1px;
 }
 
-.sidebarModalText{
+.sidebarModalDescription{
+    font-size: 17px;
+}
+
+.sidebarModalText {
     margin-left: 120px;
 }
 
@@ -408,12 +469,16 @@
     padding-bottom: 40px;
     width: 36%;
     background-color: whitesmoke;
+    background-image: url("DarkerHedgehog.png");
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: 500px 170px;
 
 }
 
 .listBackground {
     box-shadow: 1px 1px 6px;
-    background-color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(255, 255, 255, 0.95);
     border-radius: 10px;
     padding-top: 20px;
     padding-bottom: 70px;
@@ -448,6 +513,7 @@
     border-radius: 10px;
     margin-left: 20px;
     float: left;
+    box-shadow: 1px 7px 15px #5A7291;
 }
 
 /* ---------------------------------- Flows page css ------------------------------------ */

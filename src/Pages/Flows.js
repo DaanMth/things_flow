@@ -3,8 +3,8 @@ import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import DeleteModal from "./Modals/FlowModals/DeleteModal";
-import FlowListComponent from "./Flows/FlowListComponent";
+import DeleteModal from "../components/Modals/flowModals/DeleteModal";
+import FlowListComponent from "../components/Flows/FlowListComponent";
 
 const style = {
     position: 'absolute',
@@ -71,6 +71,7 @@ function Flows() {
             })
             .then(res => {
                 console.log(res.data, "lol");
+                getSavedflows();
                 handleCloseSaveModal();
             })
     }
@@ -90,7 +91,7 @@ function Flows() {
                     <button type="submit" className="searchButton">
                         <i className="fa fa-search"/>
                     </button>
-                    <a className={"filterButton"}><i className="fa fa-filter"/></a>
+                    <button className={"filterButton"}><i className="fa fa-filter"/></button>
                 </div>
 
                 <div className={"flowNaming"}>
@@ -117,7 +118,7 @@ function Flows() {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <Box sx={style}>
+                    <Box sx={style} className={"deleteModal"}>
                         <DeleteModal handleCloseSaveModal={handleCloseSaveModal} removeFlow={() => removeFlow()}/>
                     </Box>
                 </Modal>

@@ -18,10 +18,10 @@ function CustomModals({onClick, modal, deleteComponent}) {
                 />
             </div>
             <div className={"sidebarModalText"}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Typography className={"sidebarModalTitle"} id="modal-modal-title" variant="h6" component="h2">
                     {modal[0].name}
                 </Typography>
-                <Typography id="modal-modal-description" sx={{mt: 2}}>
+                <Typography className={"sidebarModalDescription"} id="modal-modal-description" sx={{mt: 2}}>
                     {modal[0].description}
                 </Typography>
             </div>

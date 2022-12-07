@@ -7,16 +7,16 @@ function SaveComponentModal({onClick, setSavedName, setSavedDescription, saveFlo
         <div className={"close"} onClick={onClick}>x</div>
         <div>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-                <h4>Save flow as component</h4>
+                <div className={"saveModalTitle"}>Save flow as component</div>
                 <hr/>
-                <h4>Name:</h4>
+            </Typography>
+            <Typography  id="modal-modal-title" variant="h6" component="h2">
+                <div>Name:</div>
                 <input id="description" name='description' type='text'
                        onChange={setSavedName}/>
                 <br/>
-            </Typography>
-            <Typography id="modal-modal-description" sx={{mt: 2}}>
                 <br/>
-                <h4>Description:</h4>
+                <div>Description:</div>
                 <input id="description" name='description' type='text'
                        onChange={setSavedDescription}/>
                 <br/>

@@ -13,6 +13,7 @@ function Picture({id, url, type_id, onClick}) {
     return <img
         id={id}
         ref={drag}
+        alt={""}
         src={url}
         width="100px"
         height="100px"

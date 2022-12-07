@@ -1,6 +1,6 @@
 import React from 'react'
 import {Draggable} from "react-beautiful-dnd";
-import Picture from "../Picture";
+import Picture from "../../Pages/Picture";
 
 function BeginComponent({picture, handleOpen, drawLine, index}) {
 

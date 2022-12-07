@@ -23,7 +23,7 @@ function ConvertModal({onClick, modal, saveValue, middleValue}) {
         <select value={middleValue[1]} id="channels" name="channels"
                 onChange={event => middleValue.splice(1, 1, event.target.value)}>
             <option>Select an option..</option>
-            <option value="DutyCalls">DutyCalls</option>
+            <option value="DutyCalls">Object</option>
         </select>
         <button className="componentButton"
                 onClick={saveValue}>Save

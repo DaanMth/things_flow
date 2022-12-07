@@ -1,8 +1,8 @@
-import Picture from "../Picture";
+import React from 'react'
 import {Draggable} from "react-beautiful-dnd";
-import React from "react";
+import Picture from "../../Pages/Picture";
 
-function MiddleComponent({picture, handleOpen, drawLine, index}) {
+function BeginComponent({picture, handleOpen, drawLine, index}) {
 
     return <Draggable key={picture.id} draggableId={picture.id} index={index}>
         {(provided) => (
@@ -12,9 +12,6 @@ function MiddleComponent({picture, handleOpen, drawLine, index}) {
                 <Picture url={picture.url}
                          onClick={handleOpen}
                          id={picture.id}/>
-                <div className="connect" onClick={drawLine}>
-                    <div className={"outputText"}>O</div>
-                </div>
                 <div className="arrowConnect"
                      onClick={() => drawLine(picture.id)}>
                     <div className={"inputText"}>I</div>
@@ -28,5 +25,4 @@ function MiddleComponent({picture, handleOpen, drawLine, index}) {
 
 }
 
-export default MiddleComponent
-
+export default BeginComponent

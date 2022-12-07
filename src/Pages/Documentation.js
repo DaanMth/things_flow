@@ -2,7 +2,7 @@
 import axios from "axios";
 import React, {useState} from "react";
 import Picture from "./Picture";
-import DocumentationCard from "./Documentation/DocumentationCard";
+import DocumentationCard from "../components/Documentation/DocumentationCard";
 
 function Documentation() {
     const [documentationList, setDocumentationList] = useState([]);

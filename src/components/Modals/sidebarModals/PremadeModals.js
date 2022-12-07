@@ -5,7 +5,6 @@ function PremadeModals({onClick, modal}) {
 
     return <div>
         <div className={"close"} onClick={onClick}>x</div>
-        <div>
             <div className={"sidebarModalImage"}>
                 <img
                     className={"imgSidebar"}
@@ -18,16 +17,15 @@ function PremadeModals({onClick, modal}) {
                 />
             </div>
             <div className={"sidebarModalText"}>
-                <Typography className={"sidebarModalTitle"} id="modal-modal-title" variant="h6" component="h2">
-                    {modal[0].name}
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                   <div className={"sidebarModalTitle"}>{modal[0].name}</div>
                 </Typography>
                 <hr/>
-                <Typography className={"sidebarModalDescription"} id="modal-modal-description" sx={{mt: 2}}>
-                    {modal[0].description}
+                <Typography  id="modal-modal-title" variant="h6" component="h2">
+                    <div className={"sidebarModalDescription"}>{modal[0].description}</div>
                 </Typography>
             </div>
             <br/>
-        </div>
     </div>
 
 

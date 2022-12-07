@@ -8,8 +8,8 @@ function DeleteModal({handleCloseSaveModal, removeFlow}) {
         <div>
             <Typography id="modal-modal-title" variant="h6" component="h2">
                 <div className={"Title"}>Delete</div>
-                <div>Are you sure you want to delete this flow?</div>
                 <hr/>
+                <div>Are you sure you want to delete this flow?</div>
             </Typography>
             <br/>
             <button className="deleteButton" onClick={removeFlow}>Delete</button>

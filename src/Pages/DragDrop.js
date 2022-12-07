@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Picture from './Picture';
-import BeginModal from './Modals/boardModals/BeginModal';
+import BeginModal from '../components/Modals/boardModals/BeginModal';
 import axios from "axios";
 import {useDrop} from 'react-dnd';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
@@ -10,19 +10,19 @@ import Modal from '@mui/material/Modal';
 import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
 import {useLocation} from "react-router-dom";
-import ConvertModal from "./Modals/boardModals/ConvertModal";
-import TitleModal from "./Modals/boardModals/TitleModal";
-import ChangeTitleModal from "./Modals/boardModals/ChangeTitleModal";
-import MailModal from "./Modals/boardModals/MailModal";
-import DutyCallsModal from "./Modals/boardModals/DutyCallsModal";
-import DefaultModal from "./Modals/boardModals/DefaultModal";
-import PremadeModals from "./Modals/sidebarModals/PremadeModals";
-import CustomModals from "./Modals/sidebarModals/CustomModals";
-import SaveComponentModal from "./Modals/buttonModals/SaveComponentModal";
-import SaveListModal from "./Modals/buttonModals/SaveListModal";
-import BeginComponent from "./boardComponents/BeginComponent";
-import EndComponent from "./boardComponents/EndComponent";
-import MiddleComponent from "./boardComponents/MiddleComponent";
+import ConvertModal from "../components/Modals/boardModals/ConvertModal";
+import TitleModal from "../components/Modals/boardModals/TitleModal";
+import ChangeTitleModal from "../components/Modals/boardModals/ChangeTitleModal";
+import MailModal from "../components/Modals/boardModals/MailModal";
+import DutyCallsModal from "../components/Modals/boardModals/DutyCallsModal";
+import DefaultModal from "../components/Modals/boardModals/DefaultModal";
+import PremadeModals from "../components/Modals/sidebarModals/PremadeModals";
+import CustomModals from "../components/Modals/sidebarModals/CustomModals";
+import SaveComponentModal from "../components/Modals/buttonModals/SaveComponentModal";
+import SaveListModal from "../components/Modals/buttonModals/SaveListModal";
+import BeginComponent from "../components/BoardComponents/BeginComponent";
+import EndComponent from "../components/BoardComponents/EndComponent";
+import MiddleComponent from "../components/BoardComponents/MiddleComponent";
 
 const style = {
     position: 'absolute',
@@ -125,6 +125,7 @@ function DragDrop(flowBoard) {
         sidebarAdd[0].id = (Math.random() + 1).toString(36).substring(2);
         console.log(sidebarAdd[0]);
         setBoard((board) => [...board, sidebarAdd[0]]);
+        getSidebarList()
     };
 
     //Fills the board with the given components from the Flows page
@@ -477,7 +478,8 @@ function DragDrop(flowBoard) {
             <Box sx={{width: '100%'}}>
                 <Collapse in={visibilityAlert}>
                     <Alert severity="success" onClose={() => alerting(false)} sx={{height: '2vw'}}>
-                        The flow ran successfully!!
+                        //h ///////////////////////////////////////
+                        <div className={"successAlert"}>The flow ran successfully!!</div>
                     </Alert>
                 </Collapse>
             </Box>
@@ -495,39 +497,45 @@ function DragDrop(flowBoard) {
                 <div className="Pictures">
                     <div>
                         <div className={"sidebarTitle"}>Start Component</div>
-                        {sidebar.map((picture) => {
-                            if (picture.sort === 'beginComponent') {
-                                return (
-                                    <Picture url={picture.url} id={picture.id} type_id={picture.type_id}
-                                             onClick={() => handleOpenSidebar(picture.id)}/>
-                                )
-                            }
-                            return null
-                        })}
+                        <div className={"sidebarBackground"}>
+                            {sidebar.map((picture) => {
+                                if (picture.sort === 'beginComponent') {
+                                    return (
+                                        <Picture url={picture.url} id={picture.id} type_id={picture.type_id}
+                                                 onClick={() => handleOpenSidebar(picture.id)}/>
+                                    )
+                                }
+                                return null
+                            })}
+                        </div>
                     </div>
                     <div>
                         <div className={"sidebarTitle"}>Middle Component</div>
-                        {sidebar.map((picture) => {
-                            if (picture.sort === 'middleComponent') {
-                                return (
-                                    <Picture url={picture.url} id={picture.id} type_id={picture.type_id}
-                                             onClick={() => handleOpenSidebar(picture.id)}/>
-                                )
-                            }
-                            return null
-                        })}
+                        <div className={"sidebarBackground"}>
+                            {sidebar.map((picture) => {
+                                if (picture.sort === 'middleComponent') {
+                                    return (
+                                        <Picture url={picture.url} id={picture.id} type_id={picture.type_id}
+                                                 onClick={() => handleOpenSidebar(picture.id)}/>
+                                    )
+                                }
+                                return null
+                            })}
+                        </div>
                     </div>
                     <div>
                         <div className={"sidebarTitle"}>End Component</div>
-                        {sidebar.map((picture) => {
-                            if (picture.sort === 'endComponent') {
-                                return (
-                                    <Picture url={picture.url} id={picture.id} type_id={picture.type_id}
-                                             onClick={() => handleOpenSidebar(picture.id)}/>
-                                )
-                            }
-                            return null
-                        })}
+                        <div className={"sidebarBackground"}>
+                            {sidebar.map((picture) => {
+                                if (picture.sort === 'endComponent') {
+                                    return (
+                                        <Picture url={picture.url} id={picture.id} type_id={picture.type_id}
+                                                 onClick={() => handleOpenSidebar(picture.id)}/>
+                                    )
+                                }
+                                return null
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -630,7 +638,7 @@ function DragDrop(flowBoard) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={style} className={"deleteModal"}>
                     {(() => {
                         if (modal[0].removable === true) {
                             return (
@@ -652,7 +660,7 @@ function DragDrop(flowBoard) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={style} className={"deleteModal"}>
                     <SaveComponentModal onClick={handleCloseSaveModal} saveFlow={() => saveFlow()}
                                         setSavedDescription={event => setSavedDescription(event.target.value)}
                                         setSavedName={event => setSavedName(event.target.value)}/>
@@ -665,7 +673,7 @@ function DragDrop(flowBoard) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={style} className={"deleteModal"}>
                     <SaveListModal onClick={handleCloseSaveList} saveAsList={() => saveAsList()}
                                    setSavedListName={event => setSavedListName(event.target.value)}/>
                 </Box>
@@ -685,21 +693,25 @@ function DragDrop(flowBoard) {
 
             <div className="submit">
                 <button className="math" onClick={() => calculateBoard(null)}><img className={"buttonImages"}
-                                                                                   src="./Images/run.png"
-                                                                                   alt="Italian Trulli"/></button>
+                                                                                   src="Images/run.png"
+                                                                                   alt="Italian Trulli"/><span
+                    className="tooltiptext">Run the board</span></button>
             </div>
             <div className="submit">
                 <button className="math saveButton" onClick={() => handleOpenSavemodal()}><img
-                    className={"buttonImages"} src="./Images/save.png" alt="Italian Trulli"/></button>
+                    className={"buttonImages"} src="Images/save.png" alt="Italian Trulli"/><span
+                    className="tooltiptext">Save to sidebar</span></button>
             </div>
             <div className="submit">
                 <button className="math saveToListButton" onClick={() => handleOpenSaveList()}><img
-                    className={"buttonImages"} src="./Images/saveToList.png" alt="Italian Trulli"/></button>
+                    className={"buttonImages"} src="Images/saveToList.png" alt="Italian Trulli"/><span
+                    className="tooltiptext">Save to list</span></button>
             </div>
             <div className="submit">
                 <button className="math removeButton" onClick={() => emptyBoard()}><img className={"buttonImages"}
-                                                                                        src="./Images/remove.png"
-                                                                                        alt="Italian Trulli"/></button>
+                                                                                        src="Images/remove.png"
+                                                                                        alt="Italian Trulli"/><span
+                    className="tooltiptext">Delete the board</span></button>
             </div>
         </div>
 

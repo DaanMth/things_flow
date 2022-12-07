@@ -2,11 +2,11 @@ import './App.css';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import {DndProvider} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
-import DragDrop from './components/DragDrop';
-import Header from './components/Header';
-import HomePage from './components/HomePage';
-import Documentation from './components/Documentation';
-import Flows from './components/Flows';
+import DragDrop from './Pages/DragDrop';
+import Header from './Pages/Header';
+import HomePage from './Pages/HomePage';
+import Documentation from './Pages/Documentation';
+import Flows from './Pages/Flows';
 
 function App() {
 
