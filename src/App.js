@@ -7,22 +7,25 @@ import Header from './Pages/Header';
 import HomePage from './Pages/HomePage';
 import Documentation from './Pages/Documentation';
 import Flows from './Pages/Flows';
+import {AnimatePresence} from "framer-motion";
 
 function App() {
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <div className="App">
-                <BrowserRouter>
-                    <Header/>
-                    <Routes>
-                        <Route path="dragDrop" element={<DragDrop/>}/>
-                        <Route path="/" element={<HomePage/>}/>
-                        <Route path="documentation" element={<Documentation/>}/>
-                        <Route path="flows" element={<Flows/>}/>
-                    </Routes>
-                </BrowserRouter>
-            </div>
+            <AnimatePresence>
+                <div className="App">
+                    <BrowserRouter>
+                        <Header/>
+                        <Routes>
+                            <Route path="dragDrop" element={<DragDrop/>}/>
+                            <Route path="/" element={<HomePage/>}/>
+                            <Route path="documentation" element={<Documentation/>}/>
+                            <Route path="flows" element={<Flows/>}/>
+                        </Routes>
+                    </BrowserRouter>
+                </div>
+            </AnimatePresence>
         </DndProvider>
     );
 }

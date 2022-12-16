@@ -23,6 +23,7 @@ import SaveListModal from "../components/Modals/buttonModals/SaveListModal";
 import BeginComponent from "../components/BoardComponents/BeginComponent";
 import EndComponent from "../components/BoardComponents/EndComponent";
 import MiddleComponent from "../components/BoardComponents/MiddleComponent";
+import {motion as m} from "framer-motion";
 
 const style = {
     position: 'absolute',
@@ -44,6 +45,8 @@ function DragDrop() {
     const [modalValue, setModalValue] = useState([]);
     const [middleValue, setMiddleValue] = useState([]);
     const [fileName, setFileName] = useState([]);
+    const [dcValue, setDCValue] = useState([]);
+    const [error, setError] = useState(null);
     const [mailValue, setMailValue] = useState([]);
     const [savedListName, setSavedListName] = useState([]);
     const [modal, setModal] = useState([{name: 'null', description: 'null'}]);
@@ -53,6 +56,7 @@ function DragDrop() {
     const [openSaveModal, setOpenSaveModal] = React.useState(false);
     const [openSaveList, setOpenSaveList] = React.useState(false);
     const [savedName, setSavedName] = useState("");
+    const [flowName, setFlowName] = useState(null)
     const [savedDescription, setSavedDescription] = useState("");
     const [visibilityAlert, setVisibilityAlert] = React.useState(false);
     const [visibilityErrorAlert, setVisibilityErrorAlert] = React.useState(false);
@@ -82,26 +86,44 @@ function DragDrop() {
 
     //Open and closes the modals of the components inside the save button
     const handleOpenSaveList = () => {
+        console.log(arrows);
         setOpenSaveList(true);
     }
+
+    //Open and closes the modal that saves the flow to a list
     const handleCloseSaveList = () => setOpenSaveList(false);
+
+    function isValidEmail(email) {
+        return /\S+@\S+\.\S+/.test(email);
+    }
 
     //Save the value of the component that is given in the modal
     const saveValue = (id, component) => {
+        console.log(modal)
         const boardBlock = board.filter((picture) => id === picture.id);
+        console.log(component);
         if (component === "middleComponent") {
             boardBlock[0].number = middleValue;
+            setDCValue(middleValue);
         }
         if (component === "dutyCallsComponent") {
             boardBlock[0].number = modalValue;
+            setDCValue(modalValue);
         }
         if (component === "mailComponent") {
-            boardBlock[0].number = mailValue;
+            if (!isValidEmail(mailValue)) {
+                setError('Email is invalid');
+            } else {
+                setError(null);
+                boardBlock[0].number = mailValue;
+                setDCValue(modalValue);
+            }
         }
-        console.log(boardBlock[0],);
+        console.log(modal[0]);
     }
 
     //Adds an image to the board when a component is swiped inside of it
+    // eslint-disable-next-line
     const [{isOver}, drop] = useDrop(() => ({
         accept: "image",
         drop: (item) => addImageToBoard(item.id),
@@ -130,16 +152,34 @@ function DragDrop() {
 
     //Fills the board with the given components from the Flows page
     const generateBoard = (flows) => {
+        let sidebarClone = structuredClone(sidebarList);
+        let arrowIdList = [];
         if (location.state !== null) {
-            flows.forEach((flow) => {
-                let sidebarAdd = sidebarList.filter((picture) => flow.functionality === picture.functionality);
-                sidebarAdd[0].id = (Math.random() + 1).toString(36).substring(2);
-                sidebarAdd[0].number = flow.number;
-                setBoard((board) => [...board, sidebarAdd[0]]);
+            getSidebarList();
+            setFlowName(location.state.flowName)
+            flows.flowComponents.forEach((flow) => {
+                if (flow.boardFunctionality === "none") {
+                    setFileName(flow.fileName);
+                }
+                const arrowsList = sidebarClone.filter((picture) => picture.functionality === flow.boardFunctionality);
+                arrowsList[0].id = flow.boardId;
+                arrowsList[0].number = flow.boardNumber;
+                console.log(arrowsList, flow.boardNumber);
+                setBoard((board) => [...board, arrowsList[0]]);
             })
             location.state = null;
-            getSidebarList()
+            flows.arrowsList.forEach((arrowId) => {
+                arrowIdList.push(arrowId)
+            })
+            generateArrows(arrowIdList)
         }
+    }
+
+    //Used to generate the arrows when you view a saved flow
+    const generateArrows = (arrows) => {
+        arrows.forEach((arrow) => {
+            arrowList(arrow.firstBlock, arrow.secondBlock)
+        })
     }
 
     //Gives a success alert when a flow ran successfully
@@ -262,14 +302,16 @@ function DragDrop() {
             z.push(
                 {
                     functionality: component.functionality,
-                    number: component.number
+                    number: component.number,
+                    id: component.id
                 }
             )
         ));
         let flow = {
             name: savedName,
             description: savedDescription,
-            functionality: z,
+            functionality: savedName,
+            number: z,
             id: (Math.random() + 1).toString(36).substring(2),
             type_id: (Math.random() + 1).toString(36).substring(2),
             url: "./Images/Flow2.png",
@@ -280,11 +322,48 @@ function DragDrop() {
         addComponent(flow);
     }
 
+    //Reforms the flow so that it's capable to be saved to a list
+    const reformFlow = () => {
+        let y = structuredClone(board);
+        let z = [];
+        y.forEach((component) => {
+            console.log(component);
+            if (component.functionality === "none") {
+                z.push({
+                    boardFunctionality: component.functionality,
+                    boardNumber: component.number,
+                    boardId: component.id,
+                    fileName: fileName
+                })
+                return;
+            }
+            if (component.functionality !== "Change Title") {
+                if(component.functionality !== "none"){
+                    z.push(
+                        {
+                            boardFunctionality: component.functionality,
+                            boardNumber: component.number,
+                            boardId: component.id,
+                        }
+                    )
+                }
+            }else{
+                z.push(
+                    {
+                        boardFunctionality: component.functionality,
+                        boardId: component.id
+                    }
+                )
+            }
+        });
+        console.log(z);
+        return z;
+    }
+
     //Adds an arrow to the page
     const arrowList = (firstBlock, secondBlock) => {
         setArrow((arrow) => [...arrow, {firstBlock, secondBlock}]);
         setBlock([]);
-        console.log(arrows);
     }
 
     //Adds an arrow to the page
@@ -297,7 +376,9 @@ function DragDrop() {
     //Puts the components in the side bar
     useEffect(() => {
         getSidebarList();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
 
     //Adds an arrow to the page
     const drawLine = (id) => {
@@ -319,7 +400,7 @@ function DragDrop() {
 
     //API call for the functionality to add the component to the board
     function addComponent(flow) {
-        console.log(flow,);
+        console.log(flow);
         axios.post("http://localhost:9210/collection/Collectie_Daan", {
                 'type': 'run',
                 'name': 'addComponent',
@@ -359,7 +440,6 @@ function DragDrop() {
                 console.log(err);
             })
             .then(res => {
-                console.log(res.data,);
                 handleCloseSidebar()
             })
     }
@@ -385,36 +465,11 @@ function DragDrop() {
 
     //Changes the board component to a list so it can be added to the list page
     const reformFlowToList = () => {
-        let y = structuredClone(board);
-        let z = [];
-        y.forEach((component) => {
-            if (component.number !== undefined) {
-                z.push(
-                    {
-                        functionality: component.functionality,
-                        number: component.number
-                    }
-                )
-            } else {
-                component.functionality.forEach((flowComponent) => {
-                    if (flowComponent.functionality !== "none") {
-                        if (flowComponent.functionality !== "sendDutyCalls") {
-                            z.push(
-                                {
-                                    functionality: flowComponent.functionality,
-                                    number: flowComponent.number
-                                }
-                            )
-                        }
-                    }
-                })
-            }
-
-        });
         return {
             flow_id: (Math.random() + 1).toString(36).substring(2),
             name: savedListName,
-            components: z,
+            components: reformFlow(),
+            arrowsList: arrows
         };
     }
 
@@ -474,7 +529,10 @@ function DragDrop() {
     }
 
     return (
-        <div className={"dragDrop"}>
+        <m.div className={"dragDrop"} initial={{opacity: 0}}
+               animate={{opacity: 1}}
+               exit={{opacity: 0}}
+               transition={{duration: 0.75, ease: "easeOut"}}>
 
             <Box sx={{width: '100%'}}>
                 <Collapse in={visibilityAlert}>
@@ -483,7 +541,6 @@ function DragDrop() {
                     </Alert>
                 </Collapse>
             </Box>
-
             <Box sx={{width: '100%'}}>
                 <Collapse in={visibilityErrorAlert}>
                     <Alert severity="error" onClose={() => alertingError(false)} sx={{height: '2vw'}}>
@@ -492,7 +549,6 @@ function DragDrop() {
                     </Alert>
                 </Collapse>
             </Box>
-
             <div className="sidebar" id="sidebar">
                 <div className="Pictures">
                     <div>
@@ -540,35 +596,41 @@ function DragDrop() {
                 </div>
             </div>
 
-            <div className="Board" ref={drop}>
-                <DragDropContext onDragEnd={handleOnDragEnd}>
-                    <Droppable droppableId="blocks" direction="horizontal">
-                        {(provided) => (
-                            <div className="blocks" {...provided.droppableProps} ref={provided.innerRef}>
-                                {board.map((picture, index) => {
-                                    if (picture.sort === "beginComponent") {
-                                        return (
-                                            <BeginComponent drawLine={() => drawLine(picture.id)} picture={picture}
-                                                            handleOpen={() => handleOpen(picture.id)} index={index}/>
-                                        )
-                                    }
-                                    if (picture.sort === "endComponent") {
-                                        return (
-                                            <EndComponent drawLine={() => drawLine(picture.id)} picture={picture}
-                                                          handleOpen={() => handleOpen(picture.id)} index={index}/>
-                                        )
-                                    } else {
-                                        return (
-                                            <MiddleComponent drawLine={() => drawLine(picture.id)} picture={picture}
-                                                             handleOpen={() => handleOpen(picture.id)} index={index}/>
-                                        )
-                                    }
-                                })}
-                                {provided.placeholder}
-                            </div>
-                        )}
-                    </Droppable>
-                </DragDropContext>
+
+            <div>
+                <div className={"flowMainTitle"}>{flowName}</div>
+                <div className="Board" ref={drop}>
+                    <DragDropContext onDragEnd={handleOnDragEnd}>
+                        <Droppable droppableId="blocks" direction="horizontal">
+                            {(provided) => (
+                                <div className="blocks" {...provided.droppableProps} ref={provided.innerRef}>
+                                    {board.map((picture, index) => {
+                                        if (picture.sort === "beginComponent") {
+                                            return (
+                                                <BeginComponent drawLine={() => drawLine(picture.id)} picture={picture}
+                                                                handleOpen={() => handleOpen(picture.id)}
+                                                                index={index}/>
+                                            )
+                                        }
+                                        if (picture.sort === "endComponent") {
+                                            return (
+                                                <EndComponent drawLine={() => drawLine(picture.id)} picture={picture}
+                                                              handleOpen={() => handleOpen(picture.id)} index={index}/>
+                                            )
+                                        } else {
+                                            return (
+                                                <MiddleComponent drawLine={() => drawLine(picture.id)} picture={picture}
+                                                                 handleOpen={() => handleOpen(picture.id)}
+                                                                 index={index}/>
+                                            )
+                                        }
+                                    })}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                </div>
             </div>
 
             <Modal
@@ -577,7 +639,7 @@ function DragDrop() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={style} className={"boardModal"}>
                     {(() => {
                         if (modal[0].sort === "beginComponent") {
                             return (
@@ -589,7 +651,7 @@ function DragDrop() {
                             return (
                                 <ConvertModal onClick={handleClose} modal={modal}
                                               saveValue={() => saveValue(modal[0].id, "middleComponent")}
-                                              middleValue={middleValue}/>
+                                              dcValue={dcValue} middleValue={middleValue}/>
                             )
                         }
                         if (modal[0].name === "Title") {
@@ -597,6 +659,7 @@ function DragDrop() {
                                 <TitleModal onClick={handleClose}
                                             modal={modal}
                                             onChange={event => setMiddleValue(event.target.value)}
+                                            dcValue={dcValue}
                                             saveValue={() => saveValue(modal[0].id, "middleComponent")}/>
 
                             )
@@ -611,7 +674,8 @@ function DragDrop() {
                             return (
                                 <MailModal modal={modal} handleClose={handleClose}
                                            setMailValue={event => setMailValue(event.target.value)}
-                                           saveValue={() => saveValue(modal[0].id, "mailComponent")}/>
+                                           saveValue={() => saveValue(modal[0].id, "mailComponent")}
+                                           error={error}/>
 
                             )
                         }
@@ -619,7 +683,7 @@ function DragDrop() {
                             return (
                                 <DutyCallsModal modal={modal} handleClose={handleClose}
                                                 setModalValue={event => setModalValue(event.target.value)}
-                                                modalValue={modalValue}
+                                                modalValue={modalValue} dcValue={dcValue}
                                                 saveValue={() => saveValue(modal[0].id, "dutyCallsComponent")}/>
                             )
                         } else {
@@ -713,7 +777,7 @@ function DragDrop() {
                                                                                         alt="Italian Trulli"/><span
                     className="tooltiptext">Delete the board</span></button>
             </div>
-        </div>
+        </m.div>
 
 
     );

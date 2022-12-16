@@ -6,10 +6,15 @@ function DutyCallsModal({handleClose, modal, modalValue, setModalValue, saveValu
     return <div>
         <div className={"close"} onClick={handleClose}>x</div>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-            {modal[0].name}
+            <div className={"sidebarModalTitle"}>{modal[0].name}</div>
         </Typography>
+        <hr/>
         <Typography id="modal-modal-description" sx={{mt: 2}}>
             {modal[0].description}
+        </Typography>
+        <br/>
+        <Typography id="modal-modal-description" sx={{mt: 2}}>
+            <h4>current value: </h4>{modal[0].number}
         </Typography>
         <br/>
         <hr/>
@@ -20,7 +25,7 @@ function DutyCallsModal({handleClose, modal, modalValue, setModalValue, saveValu
             <option value="privateChannel">Private Channel</option>
             <option value="ThingsFlow">ThingsFlow</option>
         </select>
-        <button className="componentButton"
+        <button className={"componentButton boardModalButton"}
                 onClick={() => saveValue(modal[0].id, "dutyCallsComponent")}>Save
         </button>
     </div>

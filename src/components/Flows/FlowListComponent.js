@@ -8,8 +8,7 @@ function FlowListComponent({flow, navigate, handleOpenSaveModal}) {
             <li className={"flowErrors"}>0|0</li>
             <li>13;45;82;115</li>
             <li><a className={"flowListButton"}
-                   onClick={navigate}>go to
-                flow</a></li>
+                   onClick={navigate}>go to flow</a></li>
             <li className={"favorite"}>⭐</li>
             <div className={"removeFlow"} onClick={handleOpenSaveModal}>x</div>
         </ul>

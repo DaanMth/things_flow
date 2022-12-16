@@ -1,21 +1,33 @@
 import {Col, Row} from "react-grid-system";
+import {motion as m} from "framer-motion";
+import {RemoveScrollBar} from 'react-remove-scroll-bar';
 
 
 function homePage() {
     return (
 
         <>
-            <div className={"wholePage"}>
+            <m.div className={"wholePage"}
+                   initial={{y: "100%"}}
+                   animate={{y: "0%"}}
+                   exit={{opacity: 1}}
+                   transition={{duration: 0.8, ease: "easeOut"}}>
                 <Row>
                     <Col sm={12} md={3} lg={2}/>
                     <Col sm={12} md={6} lg={8}>
-                        <img className={"thingsFlow"} src="Images/ThingsFlowNewWay.png" alt="ThingsFlow Title"/>
-                        <a className={"homeButton"} href="http://localhost:3000/flows">go to flows</a>
-
+                        <m.img className={"thingsFlow"} src="Images/ThingsFlowNewWay.png" alt="ThingsFlow Title"
+                               initial={{y: "100%"}}
+                               animate={{y: 0}}
+                               transition={{delay: 0.5, duration: 0.9}}/>
+                        <m.a className={"homeButton"} href="http://localhost:3000/flows"
+                             initial={{y: 700}}
+                             animate={{y: 0}}
+                             transition={{delay: 0.5, duration: 1.0}}>go to flows
+                        </m.a>
                     </Col>
                     <Col sm={12} md={3} lg={2}/>
                 </Row>
-            </div>
+            </m.div>
         </>
     )
 }

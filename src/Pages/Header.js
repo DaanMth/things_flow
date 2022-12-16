@@ -6,7 +6,7 @@ function Header() {
         <div className="header">
             <row>
                 <div className='column'>
-                    <Link to={"/"}><img className='logo' src={'Images/thingsLogo.png'} alt={"Hedgehog"}/></Link>
+                    <Link to={"/"}><img className={'logo'} src={'Images/thingsLogo.png'} alt={"Hedgehog"}/></Link>
                 </div>
 
                 <div className='column'>

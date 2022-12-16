@@ -28,6 +28,7 @@
 
 .componentButton:hover {
     border-style: none;
+    cursor: pointer;
     background-color: #6982a6;
 }
 
@@ -139,6 +140,7 @@
 }
 
 .logo {
+    margin-top: 2px;
     margin-left: 70px;
     position: absolute;
     z-index: 1;
@@ -182,7 +184,7 @@
 }
 
 .close:hover {
-    color: black;
+    color: #3A5985;
 }
 
 .sidebarTitle {
@@ -270,6 +272,39 @@
     height: auto;
 }
 
+.boardModalButton{
+    margin-left: 240px;
+}
+
+.fileLabel{
+    margin-top: 500px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 4px 2px -2px #455a6e;
+    border-style: none;
+    background-color: #5A7291;
+    width: 150px;
+    height: 40px;
+    padding: 10px;
+}
+
+.fileButton{
+    margin-top: 30px;
+    margin-left: 50px;
+    opacity: 0;
+}
+
+.fileLabel:hover {
+    border-style: none;
+    cursor: pointer;
+    background-color: #6982a6;
+}
+
+.emailError{
+    color: red;
+    font-weight: bold;
+}
+
 .deleteButton {
     border-radius: 10px;
     box-shadow: 0 4px 2px -2px #455a6e;
@@ -282,7 +317,6 @@
 }
 
 .deleteButton:hover {
-
     cursor: pointer;
     border-style: none;
     opacity: 0.55;
@@ -362,11 +396,14 @@
     box-shadow: 0 4px 2px -2px #455a6e;
 }
 
-
 .sidebar img {
     box-shadow: 0 4px 2px -2px #455a6e;
     margin: 15px;
     border-radius: 10px;
+}
+
+.sidebar img:hover {
+    cursor: pointer;
 }
 
 .sidebarModalImage {
@@ -399,6 +436,13 @@
     border-radius: 10px;
 }
 
+.boardModal{
+    background-image: url("DarkerHedgehog.png");
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: 500px 170px;
+}
+
 .Board {
     background-color: #D6E3F4;
     box-shadow: 0 4px 3px 0px #5A7291;
@@ -422,7 +466,7 @@
 /* ---------------------------------- Home page css ------------------------------------ */
 
 .wholePage {
-    overflow-x: hidden;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     height: 94%;
@@ -583,6 +627,19 @@ li {
     position: absolute;
     font-weight: bold;
     font-size: 15px;
+}
+
+.flowMainTitle{
+    position: absolute;
+    text-align: center;
+    width: 600px;
+    font-size: 40px;
+    font-weight: bold;
+    left: 50%;
+    right: 50%;
+    transform: translate(-20%, -5%);
+    color:#D6E3F4;
+    margin-top: 20px;
 }
 
 .flowErrors {

@@ -1,8 +1,7 @@
-//API call to get the components inside the sidebar
 import axios from "axios";
 import React, {useState} from "react";
-import Picture from "./Picture";
 import DocumentationCard from "../components/Documentation/DocumentationCard";
+import {motion as m} from "framer-motion";
 
 function Documentation() {
     const [documentationList, setDocumentationList] = useState([]);
@@ -36,13 +35,17 @@ function Documentation() {
                       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
             </head>
 
-            <div className={"documentation"}>
+            <m.div className={"documentation"}
+                   initial={{opacity: 0}}
+                   animate={{opacity: 1}}
+                   exit={{opacity: 0}}
+                   transition={{duration: 0.75, ease: "easeOut"}}>
                 <div className="search">
                     <input type="text" className="searchTerm" placeholder="Search for a component.."/>
                     <button type="submit" className="searchButton">
                         <i className="fa fa-search"/>
                     </button>
-                    <a className={"filterButton"}><i className="fa fa-filter"/></a>
+                    <div className={"filterButton"}><i className="fa fa-filter"/></div>
                 </div>
 
                 <br/>
@@ -57,7 +60,7 @@ function Documentation() {
                         })}
                     </div>
                 </div>
-            </div>
+            </m.div>
         </>
     )
 }

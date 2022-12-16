@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import DeleteModal from "../components/Modals/flowModals/DeleteModal";
 import FlowListComponent from "../components/Flows/FlowListComponent";
+import {motion as m} from "framer-motion";
 
 const style = {
     position: 'absolute',
@@ -33,14 +34,15 @@ function Flows() {
 
     //Puts the components in the flow list
     useEffect(() => {
-        getSavedflows();
-    },[])
+        getSavedFlows();
+        // eslint-disable-next-line
+    }, [])
 
     //token needed to authorize and run the API calls
     const token = `xUN1z8f3YQ6flB0ZYOWHoc`;
 
     //Get the flows that are saved and put them in the flows list
-    const getSavedflows = () => {
+    const getSavedFlows = () => {
         axios.post("http://localhost:9210/collection/Collectie_Daan", {
                 'type': 'run',
                 'name': 'getSavedFlows'
@@ -71,7 +73,7 @@ function Flows() {
             })
             .then(res => {
                 console.log(res.data, "lol");
-                getSavedflows();
+                getSavedFlows();
                 handleCloseSaveModal();
             })
     }
@@ -85,7 +87,11 @@ function Flows() {
                       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
             </head>
 
-            <div className={"wholePage"}>
+            <m.div className={"wholePage"}
+                   initial={{opacity: 0}}
+                   animate={{opacity: 1}}
+                   exit={{opacity:0}}
+                   transition={{duration: 0.75, ease: "easeOut"}}>
                 <div className="search">
                     <input type="text" className="searchTerm" placeholder="Search for a flow.."/>
                     <button type="submit" className="searchButton">
@@ -107,7 +113,7 @@ function Flows() {
                     {savedFlows.map((flow, index) => {
                         return (
                             <FlowListComponent flow={flow} handleOpenSaveModal={() => handleOpenSavemodal(index)}
-                                               navigate={() => navigate("/dragDrop", {state: flow.flowComponents})}/>
+                                               navigate={() => navigate("/dragDrop", {state: flow})}/>
                         )
                     })}
                 </div>
@@ -122,7 +128,7 @@ function Flows() {
                         <DeleteModal handleCloseSaveModal={handleCloseSaveModal} removeFlow={() => removeFlow()}/>
                     </Box>
                 </Modal>
-            </div>
+            </m.div>
         </>
     )
 
