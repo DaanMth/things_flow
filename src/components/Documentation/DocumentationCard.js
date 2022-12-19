@@ -7,6 +7,7 @@ function DocumentationCard({picture}) {
             className={"docImg"}
             src={picture.url}
             width="100px"
+            alt="Not found"
             height="100px"
             role="button"
             tabIndex="0"

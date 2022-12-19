@@ -50,7 +50,6 @@ function DragDrop() {
     const [mailValue, setMailValue] = useState([]);
     const [savedListName, setSavedListName] = useState([]);
     const [modal, setModal] = useState([{name: 'null', description: 'null'}]);
-    const [answer, setAnswer] = useState(0);
     const [open, setOpen] = React.useState(false);
     const [openSidebar, setOpenSidebar] = React.useState(false);
     const [openSaveModal, setOpenSaveModal] = React.useState(false);
@@ -86,22 +85,20 @@ function DragDrop() {
 
     //Open and closes the modals of the components inside the save button
     const handleOpenSaveList = () => {
-        console.log(arrows);
         setOpenSaveList(true);
     }
 
     //Open and closes the modal that saves the flow to a list
     const handleCloseSaveList = () => setOpenSaveList(false);
 
+    //Checks to see if the email that you have entered is formatted the right way
     function isValidEmail(email) {
         return /\S+@\S+\.\S+/.test(email);
     }
 
     //Save the value of the component that is given in the modal
     const saveValue = (id, component) => {
-        console.log(modal)
         const boardBlock = board.filter((picture) => id === picture.id);
-        console.log(component);
         if (component === "middleComponent") {
             boardBlock[0].number = middleValue;
             setDCValue(middleValue);
@@ -119,7 +116,6 @@ function DragDrop() {
                 setDCValue(modalValue);
             }
         }
-        console.log(modal[0]);
     }
 
     //Adds an image to the board when a component is swiped inside of it
@@ -145,26 +141,35 @@ function DragDrop() {
     const addImageToBoard = (id) => {
         let sidebarAdd = sidebarList.filter((picture) => id === picture.id);
         sidebarAdd[0].id = (Math.random() + 1).toString(36).substring(2);
-        console.log(sidebarAdd[0]);
         setBoard((board) => [...board, sidebarAdd[0]]);
         getSidebarList()
     };
 
     //Fills the board with the given components from the Flows page
     const generateBoard = (flows) => {
+        console.log(flows);
         let sidebarClone = structuredClone(sidebarList);
         let arrowIdList = [];
         if (location.state !== null) {
             getSidebarList();
+            console.log(flows)
             setFlowName(location.state.flowName)
             flows.flowComponents.forEach((flow) => {
+                if(flow.boardNumber === "Change Title"){
+                    const arrowsList = sidebarClone.filter((picture) => picture.number === flow.boardNumber);
+                    arrowsList[0].id = flow.boardId;
+                    console.log(arrowsList)
+                    setBoard((board) => [...board, arrowsList[0]]);
+                    return;
+                }
                 if (flow.boardFunctionality === "none") {
                     setFileName(flow.fileName);
                 }
+                console.log(flow);
                 const arrowsList = sidebarClone.filter((picture) => picture.functionality === flow.boardFunctionality);
+                console.log(arrowsList[0]);
                 arrowsList[0].id = flow.boardId;
                 arrowsList[0].number = flow.boardNumber;
-                console.log(arrowsList, flow.boardNumber);
                 setBoard((board) => [...board, arrowsList[0]]);
             })
             location.state = null;
@@ -223,8 +228,8 @@ function DragDrop() {
                 runFlow(x);
                 return;
             }
+            console.log("firstCalculation:" + secondBlock.functionality.length)
             if (secondBlock.functionality.length === 4) {
-                console.log(secondBlock.functionality);
                 secondBlock.functionality.splice(-1, 1);
                 secondBlock.functionality.splice(0, 1);
             }
@@ -232,7 +237,7 @@ function DragDrop() {
             x.push(secondBlock.functionality[0]);
             secondBlock.functionality.splice(0, 1);
             flowSwitch = true;
-            console.log(x,)
+            console.log(x)
             runFlow(x);
         }
     }
@@ -241,18 +246,17 @@ function DragDrop() {
     const secondCalculation = (x, secondBlock) => {
         x = [y.find(b => b.id === z[0].firstBlock).number];
         x.push(secondBlock);
-        console.log(x);
         z.splice(0, 1);
         runFlow(x);
     }
 
     //Calculates the part of the flow when the calculated answer is "object"
     const thirdCalculation = (x, secondBlock, calculatedAnswer) => {
+        console.log(calculatedAnswer)
         let parsedAnswer = JSON.parse(calculatedAnswer[0]);
         x = [parsedAnswer];
         x.push(secondBlock);
         z.splice(0, 1);
-        console.log(x);
         runFlow(x);
         alerting(true);
     }
@@ -260,13 +264,10 @@ function DragDrop() {
     //Calculates the part of the flow when it has gone through every other if statement
     const fourthCalculation = (x, secondBlock, calculatedAnswer) => {
         if (z.length === 0) {
-            setAnswer((calculatedAnswer).data);
-            console.log(answer,);
             return;
         }
         x = [(calculatedAnswer)];
         x.push(secondBlock)
-        console.log(x);
         z.splice(0, 1);
         runFlow(x);
     }
@@ -274,18 +275,20 @@ function DragDrop() {
     //Runs the functions inside the board
     const calculateBoard = (calculatedAnswer) => {
         let x;
-        console.log(y);
-        if (y.length < 3 || y[2].sort === "endComponent") {
+        console.log("Calculate board" + calculatedAnswer);
+        if (y.length < 3 && y[2].sort === "endComponent") {
             alertingError(true);
             return;
         }
         let secondBlock = y.find(b => b.id === z[0].secondBlock)
-        console.log(secondBlock, calculatedAnswer);
+        console.log(secondBlock);
         if (secondBlock.functionality !== "mail") {
             firstCalculation(x, secondBlock, calculatedAnswer);
+            return;
         }
         if (calculatedAnswer === null) {
             secondCalculation(x, secondBlock);
+            return;
         }
         if (calculatedAnswer[1] === "object") {
             thirdCalculation(x, secondBlock, calculatedAnswer);
@@ -310,15 +313,14 @@ function DragDrop() {
         let flow = {
             name: savedName,
             description: savedDescription,
-            functionality: savedName,
-            number: z,
+            functionality: z,
+            number: savedName,
             id: (Math.random() + 1).toString(36).substring(2),
             type_id: (Math.random() + 1).toString(36).substring(2),
             url: "./Images/Flow2.png",
             sort: "middleComponent",
             removable: true
         }
-        console.log(flow);
         addComponent(flow);
     }
 
@@ -327,7 +329,6 @@ function DragDrop() {
         let y = structuredClone(board);
         let z = [];
         y.forEach((component) => {
-            console.log(component);
             if (component.functionality === "none") {
                 z.push({
                     boardFunctionality: component.functionality,
@@ -337,20 +338,20 @@ function DragDrop() {
                 })
                 return;
             }
-            if (component.functionality !== "Change Title") {
+            if (component.number !== "Change Title") {
                 if(component.functionality !== "none"){
                     z.push(
                         {
-                            boardFunctionality: component.functionality,
                             boardNumber: component.number,
                             boardId: component.id,
+                            boardFunctionality: component.functionality,
                         }
                     )
                 }
             }else{
                 z.push(
                     {
-                        boardFunctionality: component.functionality,
+                        boardNumber: component.number,
                         boardId: component.id
                     }
                 )
@@ -400,7 +401,6 @@ function DragDrop() {
 
     //API call for the functionality to add the component to the board
     function addComponent(flow) {
-        console.log(flow);
         axios.post("http://localhost:9210/collection/Collectie_Daan", {
                 'type': 'run',
                 'name': 'addComponent',
@@ -423,7 +423,6 @@ function DragDrop() {
 
     //API call for the functionality to delete the component from the board
     function deleteComponent(flow) {
-        console.log(flow)
         axios.post("http://localhost:9210/collection/Collectie_Daan", {
                 'type': 'run',
                 'name': 'deleteComponent',
@@ -457,6 +456,7 @@ function DragDrop() {
                 }
             })
             .then(res => {
+                console.log(res.data);
                 setSidebar(res.data);
                 sidebarList = res.data;
                 generateBoard(location.state);
@@ -465,6 +465,8 @@ function DragDrop() {
 
     //Changes the board component to a list so it can be added to the list page
     const reformFlowToList = () => {
+        console.log(reformFlow());
+        console.log(arrows);
         return {
             flow_id: (Math.random() + 1).toString(36).substring(2),
             name: savedListName,
@@ -487,7 +489,6 @@ function DragDrop() {
                 }
             })
             .then(res => {
-                console.log(res,)
                 handleCloseSaveList();
             })
 
@@ -495,7 +496,6 @@ function DragDrop() {
 
     //API call that runs all the functionalities of the components on the board
     function runFlow(calculated) {
-        console.log(calculated[0], calculated[1].number);
         axios.post("http://localhost:9210/collection/Collectie_Daan", {
                 'type': 'run',
                 'name': calculated[1].functionality,
@@ -511,7 +511,7 @@ function DragDrop() {
                 console.log(err);
             })
             .then(res => {
-                console.log(res.data, "new data");
+                console.log(res.data)
                 if (res.data === "success") {
                     return;
                 }

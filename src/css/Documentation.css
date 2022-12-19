@@ -1,0 +1,64 @@
+
+.documentation {
+    background-image: url("Background.png");
+    background-attachment: fixed;
+
+}
+
+.documentationCard {
+    display: inline-block;
+    box-shadow: 1px 7px 15px #5A7291;
+    border-radius: 10px;
+    z-index: -5;
+    margin: 30px 10px 25px 50px;
+    padding-top: 20px;
+    padding-right: 40px;
+    padding-bottom: 40px;
+    width: 36%;
+    background-color: whitesmoke;
+    background-image: url("DarkerHedgehog.png");
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: 500px 170px;
+
+}
+
+.listBackground {
+    box-shadow: 1px 1px 6px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding-top: 20px;
+    padding-bottom: 70px;
+    width: 60%;
+    margin-top: 146px;
+    margin-left: 375px;
+}
+
+.allCards {
+    margin-left: 40px;
+}
+
+.docTitle {
+    font-size: 30px;
+    text-shadow: #81A5D5 2px 1px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.docDescription {
+    font-size: 16px;
+    height: max-content;
+}
+
+.docText {
+    margin-top: 10px;
+    font-family: Keraleeyam, serif;
+    margin-left: 140px;
+}
+
+.docImg {
+    border-radius: 10px;
+    margin-left: 20px;
+    float: left;
+    box-shadow: 1px 7px 15px #5A7291;
+}

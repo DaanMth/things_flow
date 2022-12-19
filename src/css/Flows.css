@@ -1,0 +1,152 @@
+
+.flowList {
+    box-shadow: 1px 1px 6px;
+    margin-top: 205px;
+    margin-left: 270px;
+    width: 1400px;
+    height: 700px;
+    background-color: white
+}
+
+.flow {
+    width: 100%;
+    height: 80px;
+    box-shadow: 0 4px 2px -2px #5A7291;
+}
+
+ul {
+    list-style-type: none;
+    height: 70px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+    height: 40px;
+    padding-top: 30px;
+    padding-left: 122px;
+    padding-right: 95px;
+}
+
+.flowListButton {
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #3A5985;
+    border: none;
+}
+
+.removeFlow {
+    color: red;
+    opacity: 0.48;
+    font-weight: bold;
+    position: absolute;
+    font-size: 20px;
+    margin-left: 1360px;
+    margin-top: 25px;
+}
+
+.removeFlow:hover {
+    cursor: pointer;
+    opacity: 0.77;
+}
+
+.flowListButton:hover {
+    cursor: pointer;
+}
+
+.flowTitle {
+    position: absolute;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.flowMainTitle{
+    position: absolute;
+    text-align: center;
+    width: 600px;
+    font-size: 40px;
+    font-weight: bold;
+    left: 50%;
+    right: 50%;
+    transform: translate(-20%, -5%);
+    color:#D6E3F4;
+    margin-top: 20px;
+}
+
+.flowErrors {
+    margin-left: 262px;
+}
+
+.flowNaming {
+    font-weight: bold;
+    position: absolute;
+    margin-top: 145px;
+    margin-left: 250px;
+}
+
+.flowFavorite {
+    margin-left: 334px;
+}
+
+.search {
+    position: absolute;
+    display: flex;
+    width: 1100px;
+    margin-left: 400px;
+    margin-top: 100px;
+}
+
+.searchTerm {
+    width: 100%;
+    border: 3px solid #3A5985;
+    border-right: none;
+    padding: 5px;
+    height: 20px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #3A5985;
+}
+
+.searchTerm:focus {
+    color: #3A5985;
+}
+
+.searchButton {
+    width: 40px;
+    height: 36px;
+    border: 1px solid #3A5985;
+    background: #3A5985;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.filterButton {
+    margin-left: 3px;
+    width: 70px;
+    height: 34px;
+    border: 1px solid #3A5985;
+    background: #3A5985;
+    text-align: center;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/*Resize the wrap to see the search bar change!*/
+.wrap {
+    width: 30%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

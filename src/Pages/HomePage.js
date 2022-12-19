@@ -1,6 +1,5 @@
 import {Col, Row} from "react-grid-system";
 import {motion as m} from "framer-motion";
-import {RemoveScrollBar} from 'react-remove-scroll-bar';
 
 
 function homePage() {
