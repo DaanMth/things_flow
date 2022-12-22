@@ -48,6 +48,27 @@
     color: white;
 }
 
+.error:hover{
+    cursor: pointer;
+}
+
+.errorSet{
+    font-weight: bold;
+    position: absolute;
+    letter-spacing: 3px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-radius: 15px;
+    margin-left: 18px;
+    margin-top: 110px;
+    background-color: #FF8585;
+    color: white;
+}
+
+.selectBar{
+    width: 250px;
+}
+
 .errorAlert {
     color: red;
 }
@@ -188,7 +209,6 @@
 .sidebarTitle {
     width: 87%;
     position: absolute;
-    font-weight: bold;
     border-radius: 10px;
     background-color: #3A5985;
     padding-right: 10px;
@@ -201,7 +221,6 @@
     padding-top: 20px;
     border-radius: 10px;
     margin-bottom: 10px;
-
 }
 
 .Pictures {
@@ -420,7 +439,7 @@
 }
 
 .sidebarModalDescription{
-    font-size: 17px;
+    font-size: 16px;
 }
 
 .sidebarModalText {

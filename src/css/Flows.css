@@ -41,6 +41,10 @@ li {
     border: none;
 }
 
+.buttonList{
+    padding-top: 22px;
+}
+
 .removeFlow {
     color: red;
     opacity: 0.48;
@@ -48,7 +52,7 @@ li {
     position: absolute;
     font-size: 20px;
     margin-left: 1360px;
-    margin-top: 25px;
+    margin-top: 24px;
 }
 
 .removeFlow:hover {
@@ -133,6 +137,19 @@ li {
     margin-left: 3px;
     width: 70px;
     height: 34px;
+    border: 1px solid #3A5985;
+    background: #3A5985;
+    text-align: center;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.filterButtonFilter{
+    margin-left: 3px;
+    width: 70px;
+    height: 36px;
     border: 1px solid #3A5985;
     background: #3A5985;
     text-align: center;

@@ -10,7 +10,7 @@ function SaveListModal({onClick, setSavedListName, saveAsList}) {
                 <div className={"saveModalTitle"}>Save flow as list</div>
                 <hr/>
                 <div>Name:</div>
-                <input id="description" name='description' type='text' maxLength='25'
+                <input id="description" name='description' type='text' maxLength='35'
                        onChange={setSavedListName}/>
                 <br/>
             </Typography>

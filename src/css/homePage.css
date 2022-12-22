@@ -16,13 +16,13 @@
     margin-left: 580px;
     color: white;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 15px;
     background-color: #3A5985;
     border: none;
 }
 
 .thingsFlow {
-    margin-left: 260px;
+    margin-left: 280px;
     margin-top: 100px;
     position: absolute;
 }

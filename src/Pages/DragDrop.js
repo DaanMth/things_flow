@@ -24,6 +24,7 @@ import BeginComponent from "../components/BoardComponents/BeginComponent";
 import EndComponent from "../components/BoardComponents/EndComponent";
 import MiddleComponent from "../components/BoardComponents/MiddleComponent";
 import {motion as m} from "framer-motion";
+import ErrorModal from "../components/Modals/boardModals/ErrorModal";
 
 const style = {
     position: 'absolute',
@@ -51,11 +52,13 @@ function DragDrop() {
     const [savedListName, setSavedListName] = useState([]);
     const [modal, setModal] = useState([{name: 'null', description: 'null'}]);
     const [open, setOpen] = React.useState(false);
+    const [errorState, setErrorState] = useState(["error", "+"]);
     const [openSidebar, setOpenSidebar] = React.useState(false);
     const [openSaveModal, setOpenSaveModal] = React.useState(false);
     const [openSaveList, setOpenSaveList] = React.useState(false);
+    const [openError, setOpenError] = React.useState(false);
     const [savedName, setSavedName] = useState("");
-    const [flowName, setFlowName] = useState(null)
+    const [flowName, setFlowName] = useState(null);
     const [savedDescription, setSavedDescription] = useState("");
     const [visibilityAlert, setVisibilityAlert] = React.useState(false);
     const [visibilityErrorAlert, setVisibilityErrorAlert] = React.useState(false);
@@ -87,13 +90,23 @@ function DragDrop() {
     const handleOpenSaveList = () => {
         setOpenSaveList(true);
     }
-
-    //Open and closes the modal that saves the flow to a list
     const handleCloseSaveList = () => setOpenSaveList(false);
+
+    //Open and closes the modals of the components inside the save button
+    const handleError = () => {
+        setOpenError(true);
+    }
+    const handleCloseError = () => setOpenError(false);
 
     //Checks to see if the email that you have entered is formatted the right way
     function isValidEmail(email) {
         return /\S+@\S+\.\S+/.test(email);
+    }
+
+    //Change the state of the error handling underneath a component in the board
+    const changeErrorState = () => {
+        setErrorState(["errorSet", "✓"])
+        handleCloseError()
     }
 
     //Save the value of the component that is given in the modal
@@ -147,27 +160,22 @@ function DragDrop() {
 
     //Fills the board with the given components from the Flows page
     const generateBoard = (flows) => {
-        console.log(flows);
         let sidebarClone = structuredClone(sidebarList);
         let arrowIdList = [];
         if (location.state !== null) {
             getSidebarList();
-            console.log(flows)
             setFlowName(location.state.flowName)
             flows.flowComponents.forEach((flow) => {
-                if(flow.boardNumber === "Change Title"){
+                if (flow.boardNumber === "Change Title") {
                     const arrowsList = sidebarClone.filter((picture) => picture.number === flow.boardNumber);
                     arrowsList[0].id = flow.boardId;
-                    console.log(arrowsList)
                     setBoard((board) => [...board, arrowsList[0]]);
                     return;
                 }
                 if (flow.boardFunctionality === "none") {
                     setFileName(flow.fileName);
                 }
-                console.log(flow);
                 const arrowsList = sidebarClone.filter((picture) => picture.functionality === flow.boardFunctionality);
-                console.log(arrowsList[0]);
                 arrowsList[0].id = flow.boardId;
                 arrowsList[0].number = flow.boardNumber;
                 setBoard((board) => [...board, arrowsList[0]]);
@@ -228,7 +236,6 @@ function DragDrop() {
                 runFlow(x);
                 return;
             }
-            console.log("firstCalculation:" + secondBlock.functionality.length)
             if (secondBlock.functionality.length === 4) {
                 secondBlock.functionality.splice(-1, 1);
                 secondBlock.functionality.splice(0, 1);
@@ -237,7 +244,6 @@ function DragDrop() {
             x.push(secondBlock.functionality[0]);
             secondBlock.functionality.splice(0, 1);
             flowSwitch = true;
-            console.log(x)
             runFlow(x);
         }
     }
@@ -252,7 +258,6 @@ function DragDrop() {
 
     //Calculates the part of the flow when the calculated answer is "object"
     const thirdCalculation = (x, secondBlock, calculatedAnswer) => {
-        console.log(calculatedAnswer)
         let parsedAnswer = JSON.parse(calculatedAnswer[0]);
         x = [parsedAnswer];
         x.push(secondBlock);
@@ -275,13 +280,11 @@ function DragDrop() {
     //Runs the functions inside the board
     const calculateBoard = (calculatedAnswer) => {
         let x;
-        console.log("Calculate board" + calculatedAnswer);
         if (y.length < 3 && y[2].sort === "endComponent") {
             alertingError(true);
             return;
         }
         let secondBlock = y.find(b => b.id === z[0].secondBlock)
-        console.log(secondBlock);
         if (secondBlock.functionality !== "mail") {
             firstCalculation(x, secondBlock, calculatedAnswer);
             return;
@@ -339,7 +342,7 @@ function DragDrop() {
                 return;
             }
             if (component.number !== "Change Title") {
-                if(component.functionality !== "none"){
+                if (component.functionality !== "none") {
                     z.push(
                         {
                             boardNumber: component.number,
@@ -348,7 +351,7 @@ function DragDrop() {
                         }
                     )
                 }
-            }else{
+            } else {
                 z.push(
                     {
                         boardNumber: component.number,
@@ -357,7 +360,6 @@ function DragDrop() {
                 )
             }
         });
-        console.log(z);
         return z;
     }
 
@@ -439,6 +441,7 @@ function DragDrop() {
                 console.log(err);
             })
             .then(res => {
+                console.log(res)
                 handleCloseSidebar()
             })
     }
@@ -609,19 +612,22 @@ function DragDrop() {
                                             return (
                                                 <BeginComponent drawLine={() => drawLine(picture.id)} picture={picture}
                                                                 handleOpen={() => handleOpen(picture.id)}
-                                                                index={index}/>
+                                                                index={index} errorHandling={handleError}
+                                                                errorState={errorState}/>
                                             )
                                         }
                                         if (picture.sort === "endComponent") {
                                             return (
                                                 <EndComponent drawLine={() => drawLine(picture.id)} picture={picture}
-                                                              handleOpen={() => handleOpen(picture.id)} index={index}/>
+                                                              handleOpen={() => handleOpen(picture.id)} index={index}
+                                                              errorHandling={handleError} errorState={["error", "+"]}/>
                                             )
                                         } else {
                                             return (
                                                 <MiddleComponent drawLine={() => drawLine(picture.id)} picture={picture}
                                                                  handleOpen={() => handleOpen(picture.id)}
-                                                                 index={index}/>
+                                                                 index={index} errorHandling={handleError}
+                                                                 errorState={["error", "+"]}/>
                                             )
                                         }
                                     })}
@@ -639,7 +645,7 @@ function DragDrop() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style} className={"boardModal"}>
+                <Box sx={style} className={"deleteModal"}>
                     {(() => {
                         if (modal[0].sort === "beginComponent") {
                             return (
@@ -693,6 +699,17 @@ function DragDrop() {
                             )
                         }
                     })()}
+                </Box>
+            </Modal>
+
+            <Modal
+                open={openError}
+                onClose={handleCloseError}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} className={"boardModal"}>
+                    <ErrorModal onClick={handleCloseError} onChange={handleChange} changeErrorState={changeErrorState}/>
                 </Box>
             </Modal>
 

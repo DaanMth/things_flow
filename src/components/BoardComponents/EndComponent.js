@@ -2,7 +2,7 @@ import React from 'react'
 import {Draggable} from "react-beautiful-dnd";
 import Picture from "../../Pages/Picture";
 
-function BeginComponent({picture, handleOpen, drawLine, index}) {
+function BeginComponent({picture, handleOpen, drawLine, index, errorHandling, errorState}) {
 
     return <Draggable key={picture.id} draggableId={picture.id} index={index}>
         {(provided) => (
@@ -16,7 +16,7 @@ function BeginComponent({picture, handleOpen, drawLine, index}) {
                      onClick={() => drawLine(picture.id)}>
                     <div className={"inputText"}>I</div>
                 </div>
-                <div className="error">+</div>
+                <div className={errorState[0]} onClick={errorHandling}>{errorState[1]}</div>
             </div>
 
         )}

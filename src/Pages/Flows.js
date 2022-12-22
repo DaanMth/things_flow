@@ -97,7 +97,7 @@ function Flows() {
                     <button type="submit" className="searchButton">
                         <i className="fa fa-search"/>
                     </button>
-                    <button className={"filterButton"}><i className="fa fa-filter"/></button>
+                    <button className={"filterButtonFilter"}><i className="fa fa-filter"/></button>
                 </div>
 
                 <div className={"flowNaming"}>
