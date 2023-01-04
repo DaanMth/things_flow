@@ -81,7 +81,7 @@ function DragDrop() {
     const handleCloseSidebar = () => setOpenSidebar(false);
 
     //Open and closes the modals of the components inside the save button
-    const handleOpenSavemodal = () => {
+    const handleOpenSaveModal = () => {
         setOpenSaveModal(true);
     }
     const handleCloseSaveModal = () => setOpenSaveModal(false);
@@ -149,12 +149,22 @@ function DragDrop() {
 
     //Makes a list of the sidebar components so that it can immediately be added to the board instead of needing a compile first
     let sidebarList;
+    let boardDuplicate = [];
 
     //Adds an image to the board when a component is swiped inside of it
     const addImageToBoard = (id) => {
         let sidebarAdd = sidebarList.filter((picture) => id === picture.id);
         sidebarAdd[0].id = (Math.random() + 1).toString(36).substring(2);
-        setBoard((board) => [...board, sidebarAdd[0]]);
+        if (boardDuplicate.find((component) => sidebarAdd[0].name === component.name)) {
+            return
+        }
+        if (boardDuplicate.find((component) => sidebarAdd[0].sort === component.sort)) {
+            if (sidebarAdd[0].sort === "endComponent") {
+                return
+            }
+        }
+        boardDuplicate.push(sidebarAdd[0])
+        setBoard((board) => [...board, sidebarAdd[0]])
         getSidebarList()
     };
 
@@ -252,6 +262,7 @@ function DragDrop() {
     const secondCalculation = (x, secondBlock) => {
         x = [y.find(b => b.id === z[0].firstBlock).number];
         x.push(secondBlock);
+        console.log(x, "THIS IS X");
         z.splice(0, 1);
         runFlow(x);
     }
@@ -287,7 +298,6 @@ function DragDrop() {
         let secondBlock = y.find(b => b.id === z[0].secondBlock)
         if (secondBlock.functionality !== "mail") {
             firstCalculation(x, secondBlock, calculatedAnswer);
-            return;
         }
         if (calculatedAnswer === null) {
             secondCalculation(x, secondBlock);
@@ -401,7 +411,7 @@ function DragDrop() {
     //token needed to authorize and run the API calls
     const token = `xUN1z8f3YQ6flB0ZYOWHoc`;
 
-    //API call for the functionality to add the component to the board
+    //API call for the functionality to add the component to the sidebar
     function addComponent(flow) {
         axios.post("http://localhost:9210/collection/Collectie_Daan", {
                 'type': 'run',
@@ -459,7 +469,6 @@ function DragDrop() {
                 }
             })
             .then(res => {
-                console.log(res.data);
                 setSidebar(res.data);
                 sidebarList = res.data;
                 generateBoard(location.state);
@@ -499,6 +508,7 @@ function DragDrop() {
 
     //API call that runs all the functionalities of the components on the board
     function runFlow(calculated) {
+        console.log(calculated);
         axios.post("http://localhost:9210/collection/Collectie_Daan", {
                 'type': 'run',
                 'name': calculated[1].functionality,
@@ -779,7 +789,7 @@ function DragDrop() {
                     className="tooltiptext">Run the board</span></button>
             </div>
             <div className="submit">
-                <button className="math saveButton" onClick={() => handleOpenSavemodal()}><img
+                <button className="math saveButton" onClick={() => handleOpenSaveModal()}><img
                     className={"buttonImages"} src="Images/save.png" alt="Italian Trulli"/><span
                     className="tooltiptext">Save to sidebar</span></button>
             </div>
